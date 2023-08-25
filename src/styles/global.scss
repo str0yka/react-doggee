@@ -1,0 +1,28 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: var(--color-neutral-500);
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-weight: normal;
+}
+
+body {
+  --color-accent-default: #F5C678;
+  --color-accent-light: rgba(245 198 120 / 70%);
+  --color-additional-default: #93B1FF;
+  --color-additional-light: rgba(147 177 255 / 70%);
+  --color-warning-default: #E36464;
+  --color-warning-light: rgba(219 57 57 / 30%);
+  --color-neutral-100: #FFF;
+  --color-neutral-200: #E4E4E4;
+  --color-neutral-300: rgba(228 228 228 / 70%);
+  --color-neutral-400: rgba(0 0 0 / 50%);
+  --color-neutral-500: #434141;
+
+  background-color: var(--color-neutral-100);
+}
+
+#root {
+  min-height: 100vh;
+}
