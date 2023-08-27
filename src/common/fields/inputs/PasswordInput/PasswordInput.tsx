@@ -6,7 +6,14 @@ import { getClassName } from '~utils/helpers';
 import inputStyles from '../Input.module.scss';
 import s from './PasswordInput.module.scss';
 
-export const PasswordInput: React.FC<InputProps> = ({ label, isError, helperText, ...props }) => {
+interface PasswordInputProps extends Omit<InputProps, 'type'> {}
+
+export const PasswordInput: React.FC<PasswordInputProps> = ({
+  label,
+  isError,
+  helperText,
+  ...props
+}) => {
   const [showPassword, setShowPassword] = useState(false);
   const showPasswordToggle = props.value;
 

@@ -6,10 +6,11 @@ import { Button } from '~common/buttons';
 
 import s from './LoginPage.module.scss';
 
-type LoginCredentials = {
+interface LoginCredentials {
   username: string;
   password: string;
-};
+  notMyComputer: boolean;
+}
 
 const validateIsEmpty = (value: string) => {
   if (!value) return 'field required';
@@ -24,12 +25,15 @@ const validatePassword = (value: string) => {
   return validateIsEmpty(value);
 };
 
-const loginFormValidateSchema: Record<keyof LoginCredentials, (value: string) => string | null> = {
+const loginFormValidateSchema: Record<
+  keyof Omit<LoginCredentials, 'notMyComputer'>,
+  (value: string) => string | null
+> = {
   username: validateUsername,
   password: validatePassword,
 };
 
-const validateLoginForm = (name: keyof LoginCredentials, value: string) => {
+const validateLoginForm = (name: keyof Omit<LoginCredentials, 'notMyComputer'>, value: string) => {
   return loginFormValidateSchema[name](value);
 };
 
@@ -37,13 +41,16 @@ export const LoginPage = () => {
   const [formValues, setFormValues] = useState<LoginCredentials>({
     username: '',
     password: '',
+    notMyComputer: false,
   });
-  const [formErrors, setFormErrors] = useState<Record<keyof LoginCredentials, null | string>>({
+  const [formErrors, setFormErrors] = useState<
+    Record<keyof Omit<LoginCredentials, 'notMyComputer'>, null | string>
+  >({
     username: null,
     password: null,
   });
 
-  const getFieldProps = (field: keyof LoginCredentials) => {
+  const getFieldProps = (field: keyof Omit<LoginCredentials, 'notMyComputer'>) => {
     const value = formValues[field];
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const error = validateLoginForm(field, event.target.value);
@@ -80,8 +87,13 @@ export const LoginPage = () => {
             />
           </div>
           <div>
-            <Checkbox />
-            <span>This is not my device</span>
+            <Checkbox
+              label="This is not my device"
+              checked={formValues.notMyComputer}
+              onChange={(event) =>
+                setFormValues((prev) => ({ ...prev, notMyComputer: event.target.checked }))
+              }
+            />
           </div>
           <Button isLoading={true}>Sign in</Button>
         </div>
