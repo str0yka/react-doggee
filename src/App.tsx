@@ -1,5 +1,12 @@
-import { LoginPage } from '~pages';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
-const App = () => <LoginPage />;
+import { publicRoutes, privateRoutes } from '~router';
+
+const App = () => {
+  const isAuth = false;
+  const router = createBrowserRouter(isAuth ? publicRoutes : privateRoutes);
+
+  return <RouterProvider router={router} />;
+};
 
 export default App;

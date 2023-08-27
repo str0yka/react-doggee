@@ -6,17 +6,52 @@
 }
 
 .container {
+  width: 500px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   border-radius: 20px;
   background: var(--background-light, #FFF);
   box-shadow: 0 4px 50px 2px rgba(0 0 0 / 15%);
+  overflow: hidden;
+}
+
+.headerContainer {
+  align-self: stretch;
+  padding: 90px 0 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-accent-default);
+  background-image: url("/images/background-doggee.svg");
+  background-position: center;
+  font-size: 40px;
+  font-family: 'Baloo 2', Arial, Helvetica, sans-serif;
+  color: var(--color-neutral-100);
+  user-select: none;
 }
 
 .formContainer {
-  padding: 105px 125px;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
 }
 
 .inputContainer {
   margin-bottom: 10px;
   display: flex;
   flex-direction: column;
+}
+
+.signUpContainer {
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.signUpLink {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-accent-default);
 }

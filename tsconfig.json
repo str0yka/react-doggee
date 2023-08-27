@@ -21,8 +21,12 @@
     "noFallthroughCasesInSwitch": true,
 
     /* Paths */
+    "baseUrl": ".",
     "paths": {
-      "~pages": ["./src/pages"]
+      "~pages": ["./src/pages"],
+      "~common/*": ["./src/common/*"],
+      "~router": ["./src/router"],
+      "~utils/helpers": ["./src/utils/helpers"],
     }
   },
   "include": ["src"],

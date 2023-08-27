@@ -1,23 +1,16 @@
-import s from './Input.module.scss';
+import { getClassName } from '~utils/helpers';
 
-interface InputProps extends React.ComponentProps<'input'> {
-  isError?: boolean;
-  helperText?: string;
-}
+import s from '../Input.module.scss';
 
-export const Input: React.FC<InputProps> = ({
-  isError,
-  helperText,
-  ...props
-}) => (
-  <div className={s.inputContainer}>
-    <input
-      {...props}
-      className={[s.input, isError ? s.error : ''].join(' ')}
-      type="text"
-    />
-    {isError && helperText && (
-      <span className={s.helperText}>{helperText}</span>
-    )}
-  </div>
+export const Input: React.FC<InputProps> = ({ isError, helperText, label, ...props }) => (
+  <>
+    <label className={getClassName(s.inputContainer, isError && s.error)}>
+      <input
+        {...props}
+        className={s.input}
+      />
+      <label className={s.inputLabel}>{label}</label>
+    </label>
+    {isError && helperText && <p className={s.helperText}>{helperText}</p>}
+  </>
 );
