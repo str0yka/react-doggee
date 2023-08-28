@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Input, PasswordInput, Checkbox } from '~common/fields';
 import { Button } from '~common/buttons';
+import { useMutation, useQueryLazy } from '~utils/hooks';
 
 import s from './LoginPage.module.scss';
 
@@ -37,18 +38,64 @@ const validateLoginForm = (name: keyof Omit<LoginCredentials, 'notMyComputer'>, 
   return loginFormValidateSchema[name](value);
 };
 
+type ApiSuccessResponse<T> = {
+  data: T;
+  success: true;
+};
+
+type ApiFailedResponse = {
+  data: { message: string };
+  success: false;
+};
+
+type ApiResponse<T> = ApiSuccessResponse<T> | ApiFailedResponse;
+
+interface User {
+  id: string;
+  username: string;
+  password: string;
+}
+
 export const LoginPage = () => {
   const [formValues, setFormValues] = useState<LoginCredentials>({
     username: '',
     password: '',
     notMyComputer: false,
   });
+
   const [formErrors, setFormErrors] = useState<
     Record<keyof Omit<LoginCredentials, 'notMyComputer'>, null | string>
   >({
     username: null,
     password: null,
   });
+
+  const {
+    mutation: authMutaion,
+    isLoading: authLoading,
+    isError: authError,
+    status: authStatus,
+  } = useMutation<ApiResponse<User>, LoginCredentials>(`${import.meta.env.VITE_API_URL}/auth`, {
+    method: 'POST',
+  });
+
+  const { query, isLoading, isError, status } = useQueryLazy<ApiResponse<User[]>>(
+    `${import.meta.env.VITE_API_URL}/users?q=${formValues.username}`,
+    {
+      dependencies: [formValues.username],
+    },
+  );
+
+  console.log('isLoading: ', isLoading);
+  console.log('isError: ', isError);
+  console.log('status: ', status);
+
+  useEffect(() => {
+    console.log('changed');
+    if (formValues.username === 'qwe') {
+      query().then((res) => console.log('response :', res));
+    }
+  }, [formValues.username]);
 
   const getFieldProps = (field: keyof Omit<LoginCredentials, 'notMyComputer'>) => {
     const value = formValues[field];
@@ -65,10 +112,23 @@ export const LoginPage = () => {
     <main className={s.page}>
       <section className={s.container}>
         <div className={s.headerContainer}>DOGGEE</div>
-        <div className={s.formContainer}>
+        <form
+          className={s.formContainer}
+          onSubmit={async (event) => {
+            event.preventDefault();
+            const response = await authMutaion(formValues);
+            console.log('response: ', response);
+          }}
+        >
+          {authError && (
+            <span>
+              {authStatus}: {authError}
+            </span>
+          )}
           <div className={s.inputContainer}>
             <Input
               label="Username"
+              disabled={authLoading}
               {...getFieldProps('username')}
               {...(formErrors.username && {
                 isError: !!formErrors.username,
@@ -79,6 +139,7 @@ export const LoginPage = () => {
           <div className={s.inputContainer}>
             <PasswordInput
               label="Password"
+              disabled={authLoading}
               {...getFieldProps('password')}
               {...(formErrors.password && {
                 isError: !!formErrors.password,
@@ -89,14 +150,21 @@ export const LoginPage = () => {
           <div>
             <Checkbox
               label="This is not my device"
+              disabled={authLoading}
               checked={formValues.notMyComputer}
               onChange={(event) =>
                 setFormValues((prev) => ({ ...prev, notMyComputer: event.target.checked }))
               }
             />
           </div>
-          <Button isLoading={true}>Sign in</Button>
-        </div>
+          <Button
+            disabled={authLoading}
+            isLoading={authLoading}
+            type="submit"
+          >
+            Sign in
+          </Button>
+        </form>
         <div className={s.signUpContainer}>
           <Link
             className={s.signUpLink}

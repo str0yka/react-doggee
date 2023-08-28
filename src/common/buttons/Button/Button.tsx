@@ -9,6 +9,6 @@ export const Button: React.FC<ButtonProps> = ({ isLoading, children, ...props })
     {...props}
     className={s.button}
   >
-    {isLoading ? <div className={s.loader}></div> : children}
+    {isLoading ? <div className={s.loader} /> : children}
   </button>
 );

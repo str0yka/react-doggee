@@ -16,12 +16,16 @@ export default defineConfig({
         replacement: path.resolve(__dirname, "src/common"),
       },
       {
+        find: "~router",
+        replacement: path.resolve(__dirname, "src/router"),
+      },
+      {
         find: "~utils/helpers",
         replacement: path.resolve(__dirname, "src/utils/helpers"),
       },
       {
-        find: "~router",
-        replacement: path.resolve(__dirname, "src/router"),
+        find: "~utils/hooks",
+        replacement: path.resolve(__dirname, "src/utils/hooks"),
       },
     ],
   },
