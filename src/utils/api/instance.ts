@@ -7,7 +7,7 @@ export class API {
   constructor(baseURL: string) {
     this.baseURL = baseURL;
     this.defaultOptions = {
-      credentials: 'same-origin',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
     };
   }

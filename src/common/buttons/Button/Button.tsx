@@ -6,8 +6,9 @@ interface ButtonProps extends React.ComponentProps<'button'> {
 
 export const Button: React.FC<ButtonProps> = ({ isLoading, children, ...props }) => (
   <button
-    {...props}
     className={s.button}
+    disabled={isLoading}
+    {...props}
   >
     {isLoading ? <div className={s.loader} /> : children}
   </button>

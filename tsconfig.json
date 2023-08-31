@@ -31,6 +31,6 @@
       "~utils/hooks": ["./src/utils/hooks"],
     }
   },
-  "include": ["src"],
+  "include": ["src", "index.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

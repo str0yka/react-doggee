@@ -20,6 +20,12 @@
     background-color: var(--color-accent-light);
     box-shadow: none;
   }
+
+  &:disabled {
+    background-color: var(--color-accent-light);
+    box-shadow: none;
+    cursor: not-allowed;
+  }
 }
 
 .loader, .loader::before, .loader::after {

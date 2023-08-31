@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+import { Button } from '~common/buttons';
 import { Input, PasswordInput, Checkbox } from '~common/fields';
 import { api } from '~utils/api';
-import { Button } from '~common/buttons';
+import { setCookie } from '~utils/helpers';
 import { useMutation, useQuery, useQueryLazy } from '~utils/hooks';
 
 import s from './LoginPage.module.scss';
@@ -118,7 +119,13 @@ export const LoginPage = () => {
           onSubmit={async (event) => {
             event.preventDefault();
             const response = await authMutaion(formValues);
-            console.log('authResponse: ', response);
+            console.log(formValues);
+            if (response?.success) {
+              setCookie(
+                'doggee-not-my-device',
+                formValues.notMyComputer ? Date.now() + 1000 * 60 : Date.now() + 1000 * 60 * 30,
+              );
+            }
           }}
         >
           {authError && <span>erorr: {authError}</span>}
@@ -155,7 +162,6 @@ export const LoginPage = () => {
             />
           </div>
           <Button
-            disabled={authLoading}
             isLoading={authLoading}
             type="submit"
           >
