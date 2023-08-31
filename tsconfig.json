@@ -26,6 +26,7 @@
       "~pages": ["./src/pages"],
       "~common/*": ["./src/common/*"],
       "~router": ["./src/router"],
+      "~utils/api": ["./src/utils/api"],
       "~utils/helpers": ["./src/utils/helpers"],
       "~utils/hooks": ["./src/utils/hooks"],
     }

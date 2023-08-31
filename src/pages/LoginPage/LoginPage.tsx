@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Input, PasswordInput, Checkbox } from '~common/fields';
+import { api } from '~utils/api';
 import { Button } from '~common/buttons';
-import { useMutation, useQueryLazy } from '~utils/hooks';
+import { useMutation, useQuery, useQueryLazy } from '~utils/hooks';
 
 import s from './LoginPage.module.scss';
 
@@ -74,27 +75,27 @@ export const LoginPage = () => {
     mutation: authMutaion,
     isLoading: authLoading,
     isError: authError,
-    status: authStatus,
-  } = useMutation<ApiResponse<User>, LoginCredentials>(`${import.meta.env.VITE_API_URL}/auth`, {
-    method: 'POST',
+  } = useMutation<ApiResponse<User>, LoginCredentials>((values) => api.post('/auth', values));
+
+  const { data, isLoading, isError } = useQuery({
+    request: () => api.get<ApiResponse<User[]>>('/users'),
+    initialValue: { data: [] },
   });
 
-  const { query, isLoading, isError, status } = useQueryLazy<ApiResponse<User[]>>(
-    `${import.meta.env.VITE_API_URL}/users?q=${formValues.username}`,
-    {
-      dependencies: [formValues.username],
-    },
-  );
+  console.log('query-data', data);
+  console.log('query-isLoading: ', isLoading);
+  console.log('query-isError: ', isError);
 
-  console.log('isLoading: ', isLoading);
-  console.log('isError: ', isError);
-  console.log('status: ', status);
+  const { query } = useQueryLazy({ request: () => api.get<ApiResponse<User[]>>('/users') });
 
   useEffect(() => {
-    console.log('changed');
-    if (formValues.username === 'qwe') {
-      query().then((res) => console.log('response :', res));
-    }
+    (async () => {
+      if (formValues.username === 'nikita') {
+        const response = await query();
+        console.log('success: ', response?.success);
+        console.log('data: ', response?.data);
+      }
+    })();
   }, [formValues.username]);
 
   const getFieldProps = (field: keyof Omit<LoginCredentials, 'notMyComputer'>) => {
@@ -117,14 +118,10 @@ export const LoginPage = () => {
           onSubmit={async (event) => {
             event.preventDefault();
             const response = await authMutaion(formValues);
-            console.log('response: ', response);
+            console.log('authResponse: ', response);
           }}
         >
-          {authError && (
-            <span>
-              {authStatus}: {authError}
-            </span>
-          )}
+          {authError && <span>erorr: {authError}</span>}
           <div className={s.inputContainer}>
             <Input
               label="Username"

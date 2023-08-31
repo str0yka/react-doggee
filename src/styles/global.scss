@@ -1,3 +1,12 @@
+:root {
+  // shadows
+  --shadow-container: 0px 4px 50px rgba(0 0 0 / 15%);
+  --shadow-button: 0px 2px 10px rgba(0 0 0 / 15%);
+  --shadow-button-hover: 0px 2px 10px rgba(0 0 0 / 5%);
+
+  // text
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -8,6 +17,7 @@
 }
 
 body {
+  // colors
   --color-accent-default: #F5C678;
   --color-accent-light: rgba(245 198 120 / 70%);
   --color-additional-default: #93B1FF;

@@ -1,24 +1,20 @@
 import { useState, useCallback } from 'react';
 
-interface Config extends Omit<RequestInit, 'body' | 'method'> {}
-interface Options {
-  dependencies: unknown[];
+interface Options<T> {
+  request: () => Promise<T>;
+  dependencies?: unknown[];
 }
 
-export const useQueryLazy = <T>(url: string, { dependencies }: Options, config?: Config) => {
+export const useQueryLazy = <T>({ request, dependencies = [] }: Options<T>) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState('');
-  const [status, setStatus] = useState(0);
 
   const query = useCallback(async () => {
     try {
       setIsLoading(true);
-      const response = await fetch(url, {
-        ...config,
-        headers: { 'Content-Type': 'application/json', ...config?.headers },
-      });
-      setStatus(response.status);
-      return response.json() as Promise<T>;
+      setIsError('');
+      const response = await request();
+      return response;
     } catch (error) {
       setIsError((error as Error).message);
     } finally {
@@ -26,5 +22,5 @@ export const useQueryLazy = <T>(url: string, { dependencies }: Options, config?:
     }
   }, dependencies);
 
-  return { query, isLoading, isError, status };
+  return { query, isLoading, isError };
 };
