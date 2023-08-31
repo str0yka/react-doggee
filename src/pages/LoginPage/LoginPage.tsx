@@ -132,7 +132,7 @@ export const LoginPage = () => {
           <div className={s.inputContainer}>
             <Input
               label="Username"
-              disabled={authLoading}
+              disabled={true}
               {...getFieldProps('username')}
               {...(formErrors.username && {
                 isError: !!formErrors.username,
