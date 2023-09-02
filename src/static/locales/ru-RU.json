@@ -1,0 +1,7 @@
+{
+  "page.login.createNewAccount": "Создать новый аккаунт",
+  "input.label.username": "Имя пользователя",
+  "input.label.password": "Пароль",
+  "input.label.notMyDevice": "Не моё устройство",
+  "button.signIn": "Войти"
+}

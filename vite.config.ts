@@ -31,6 +31,14 @@ export default defineConfig({
         find: '~utils/hooks',
         replacement: path.resolve(__dirname, 'src/utils/hooks'),
       },
+      {
+        find: '~features/intl',
+        replacement: path.resolve(__dirname, 'src/features/intl'),
+      },
+      {
+        find: '~static/*',
+        replacement: path.resolve(__dirname, 'src/static/*'),
+      },
     ],
   },
 });

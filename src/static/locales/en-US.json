@@ -1,0 +1,7 @@
+{
+  "page.login.createNewAccount": "Create new account",
+  "input.label.username": "Username",
+  "input.label.password": "Password",
+  "input.label.notMyDevice": "This is't my device",
+  "button.signIn": "Sign in"
+}

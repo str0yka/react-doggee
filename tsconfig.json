@@ -29,6 +29,8 @@
       "~utils/api": ["./src/utils/api"],
       "~utils/helpers": ["./src/utils/helpers"],
       "~utils/hooks": ["./src/utils/hooks"],
+      "~features/intl": ["src/features/intl"],
+      "~static/*": ["src/static/*"],
     }
   },
   "include": ["src", "index.d.ts"],

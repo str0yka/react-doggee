@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Button } from '~common/buttons';
 import { Input, PasswordInput, Checkbox } from '~common/fields';
 import { api } from '~utils/api';
 import { setCookie } from '~utils/helpers';
-import { useMutation, useQuery, useQueryLazy } from '~utils/hooks';
+import { useMutation } from '~utils/hooks';
+import { IntlText, useIntl } from '~features/intl';
 
 import s from './LoginPage.module.scss';
 
@@ -59,6 +60,7 @@ interface User {
 }
 
 export const LoginPage = () => {
+  const { translateMessage } = useIntl();
   const [formValues, setFormValues] = useState<LoginCredentials>({
     username: '',
     password: '',
@@ -77,27 +79,6 @@ export const LoginPage = () => {
     isLoading: authLoading,
     isError: authError,
   } = useMutation<ApiResponse<User>, LoginCredentials>((values) => api.post('/auth', values));
-
-  const { data, isLoading, isError } = useQuery({
-    request: () => api.get<ApiResponse<User[]>>('/users'),
-    initialValue: { data: [] },
-  });
-
-  console.log('query-data', data);
-  console.log('query-isLoading: ', isLoading);
-  console.log('query-isError: ', isError);
-
-  const { query } = useQueryLazy({ request: () => api.get<ApiResponse<User[]>>('/users') });
-
-  useEffect(() => {
-    (async () => {
-      if (formValues.username === 'nikita') {
-        const response = await query();
-        console.log('success: ', response?.success);
-        console.log('data: ', response?.data);
-      }
-    })();
-  }, [formValues.username]);
 
   const getFieldProps = (field: keyof Omit<LoginCredentials, 'notMyComputer'>) => {
     const value = formValues[field];
@@ -131,8 +112,8 @@ export const LoginPage = () => {
           {authError && <span>erorr: {authError}</span>}
           <div className={s.inputContainer}>
             <Input
-              label="Username"
-              disabled={true}
+              label={translateMessage('input.label.username')}
+              disabled={authLoading}
               {...getFieldProps('username')}
               {...(formErrors.username && {
                 isError: !!formErrors.username,
@@ -142,7 +123,7 @@ export const LoginPage = () => {
           </div>
           <div className={s.inputContainer}>
             <PasswordInput
-              label="Password"
+              label={translateMessage('input.label.password')}
               disabled={authLoading}
               {...getFieldProps('password')}
               {...(formErrors.password && {
@@ -153,7 +134,7 @@ export const LoginPage = () => {
           </div>
           <div>
             <Checkbox
-              label="This is not my device"
+              label={translateMessage('input.label.notMyDevice')}
               disabled={authLoading}
               checked={formValues.notMyComputer}
               onChange={(event) =>
@@ -165,7 +146,7 @@ export const LoginPage = () => {
             isLoading={authLoading}
             type="submit"
           >
-            Sign in
+            <IntlText path="button.signIn" />
           </Button>
         </form>
         <div className={s.signUpContainer}>
@@ -173,7 +154,7 @@ export const LoginPage = () => {
             className={s.signUpLink}
             to="/registration"
           >
-            Create new account
+            <IntlText path="page.login.createNewAccount" />
           </Link>
         </div>
       </section>
