@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import { LoadingPage } from '~pages';
-import { getCookie, deleteCookie, getLocale, getMessages } from '~utils/helpers';
 import { IntlProvider } from '~features/intl';
-import { ThemeProvider, getInitialTheme } from '~features/theming';
-import { publicRoutes, privateRoutes } from '~router';
+import { getInitialTheme, ThemeProvider } from '~features/theming';
+import { LoadingPage } from '~pages';
+import { privateRoutes, publicRoutes } from '~router';
+import { deleteCookie, getCookie, getLocale, getMessages } from '~utils/helpers';
 
 const App = () => {
   const theme = getInitialTheme();
