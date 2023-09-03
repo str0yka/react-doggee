@@ -13,19 +13,29 @@
   &:focus-within {
     background-color: var(--color-neutral-300);
   }
-}
 
-.inputContainer.error {
-  background: var(--color-warning-light);
+  &[aria-disabled='true'] {
+    cursor: not-allowed;
+
+    &:hover,
+    &:focus-within {
+      background-color: var(--color-neutral-200);
+    }
+  }
+
+  &.error {
+    background: var(--color-warning-light);
+  }
 }
 
 .input {
   flex-grow: 1;
   transform: translateY(6px);
   font-size: 14px;
+  cursor: inherit;
 }
 
-.inputLabel {
+.label {
   position: absolute;
   font-size: 14px;
   color: var(--color-neutral-400);
@@ -34,8 +44,8 @@
   user-select: none;
 }
 
-.inputContainer:focus-within .inputLabel,
-.input:not([value=""]) + .inputLabel {
+.inputContainer:focus-within .label,
+.input:not([value=""]) + .label {
   transform: translate(-5px, -10px);
   font-size: 10px;
 }

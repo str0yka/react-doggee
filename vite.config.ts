@@ -36,6 +36,10 @@ export default defineConfig({
         replacement: path.resolve(__dirname, 'src/features/intl'),
       },
       {
+        find: '~features/theming',
+        replacement: path.resolve(__dirname, 'src/features/theming'),
+      },
+      {
         find: '~static/*',
         replacement: path.resolve(__dirname, 'src/static/*'),
       },

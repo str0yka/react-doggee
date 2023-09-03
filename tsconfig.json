@@ -30,6 +30,7 @@
       "~utils/helpers": ["./src/utils/helpers"],
       "~utils/hooks": ["./src/utils/hooks"],
       "~features/intl": ["src/features/intl"],
+      "~features/theming": ["src/features/theming"],
       "~static/*": ["src/static/*"],
     }
   },

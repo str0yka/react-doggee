@@ -1,0 +1,15 @@
+.theme {
+  // colors
+--color-neutral-100: #FFF;
+--color-neutral-200: #E4E4E4;
+--color-neutral-300: rgba(228 228 228 / 70%);
+--color-neutral-400: rgba(0 0 0 / 50%);
+--color-neutral-500: #434141;
+
+// shadows
+--shadow-container: 0px 4px 50px rgba(0 0 0 / 15%);
+--shadow-button: 0px 2px 10px rgba(0 0 0 / 15%);
+--shadow-button-hover: 0px 2px 10px rgba(0 0 0 / 5%);
+
+  background-color: var(--color-neutral-100);
+}

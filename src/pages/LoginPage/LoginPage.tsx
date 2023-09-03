@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom';
 import { Button } from '~common/buttons';
 import { Input, PasswordInput, Checkbox } from '~common/fields';
 import { api } from '~utils/api';
-import { setCookie } from '~utils/helpers';
+import { getClassName, setCookie } from '~utils/helpers';
 import { useMutation } from '~utils/hooks';
 import { IntlText, useIntl } from '~features/intl';
+import { useTheme } from '~features/theming';
 
 import s from './LoginPage.module.scss';
 
@@ -60,6 +61,7 @@ interface User {
 }
 
 export const LoginPage = () => {
+  const { theme, changeTheme } = useTheme();
   const { translateMessage } = useIntl();
   const [formValues, setFormValues] = useState<LoginCredentials>({
     username: '',
@@ -93,8 +95,11 @@ export const LoginPage = () => {
 
   return (
     <main className={s.page}>
+      <button onClick={() => changeTheme(theme === 'light' ? 'dark' : 'light')}>
+        CHANGE THEME
+      </button>
       <section className={s.container}>
-        <div className={s.headerContainer}>DOGGEE</div>
+        <div className={getClassName(s.headerContainer, s[theme])}>DOGGEE</div>
         <form
           className={s.formContainer}
           onSubmit={async (event) => {
@@ -113,7 +118,7 @@ export const LoginPage = () => {
           <div className={s.inputContainer}>
             <Input
               label={translateMessage('input.label.username')}
-              disabled={authLoading}
+              disabled={true}
               {...getFieldProps('username')}
               {...(formErrors.username && {
                 isError: !!formErrors.username,
@@ -124,7 +129,7 @@ export const LoginPage = () => {
           <div className={s.inputContainer}>
             <PasswordInput
               label={translateMessage('input.label.password')}
-              disabled={authLoading}
+              disabled={true}
               {...getFieldProps('password')}
               {...(formErrors.password && {
                 isError: !!formErrors.password,

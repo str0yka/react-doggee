@@ -13,7 +13,7 @@
   justify-content: space-between;
   align-items: center;
   border-radius: 20px;
-  background: var(--background-light, #FFF);
+  background: var(--color-neutral-100);
   box-shadow: var(--shadow-container);
   overflow: hidden;
 }
@@ -24,13 +24,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-accent-default);
-  background-image: url("/images/background-doggee.svg");
   background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #FFF;
   font-size: 40px;
   font-family: 'Baloo 2', Arial, Helvetica, sans-serif;
-  color: var(--color-neutral-100);
   user-select: none;
+
+  &.light {
+    background-color: var(--color-accent-default);
+    background-image: url("/images/background-doggee-light.svg");
+  }
+
+  &.dark {
+    background-color: var(--color-neutral-200);
+    background-image: url("/images/background-doggee-dark.svg");
+  }
 }
 
 .formContainer {

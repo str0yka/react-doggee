@@ -19,15 +19,19 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
 
   return (
     <>
-      <label className={getClassName(inputStyles.inputContainer, isError && inputStyles.error)}>
+      <label
+        aria-disabled={props.disabled}
+        className={getClassName(inputStyles.inputContainer, isError && inputStyles.error)}
+      >
         <input
           {...props}
           className={inputStyles.input}
           type={showPassword ? 'text' : 'password'}
         />
-        <label className={inputStyles.inputLabel}>{label}</label>
+        <label className={inputStyles.label}>{label}</label>
         {showPasswordToggle && (
           <button
+            type="button"
             className={s.passwordToggle}
             onClick={() => setShowPassword((prev) => !prev)}
           >

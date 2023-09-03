@@ -4,9 +4,11 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { LoadingPage } from '~pages';
 import { getCookie, deleteCookie, getLocale, getMessages } from '~utils/helpers';
 import { IntlProvider } from '~features/intl';
+import { ThemeProvider, getInitialTheme } from '~features/theming';
 import { publicRoutes, privateRoutes } from '~router';
 
 const App = () => {
+  const theme = getInitialTheme();
   const [isAuth, setIsAuth] = useState(false);
   const [messages, setMessages] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -37,12 +39,14 @@ const App = () => {
   if (isLoading) return <LoadingPage />;
 
   return (
-    <IntlProvider
-      locale={locale}
-      messages={messages}
-    >
-      <RouterProvider router={router} />
-    </IntlProvider>
+    <ThemeProvider theme={theme}>
+      <IntlProvider
+        locale={locale}
+        messages={messages}
+      >
+        <RouterProvider router={router} />
+      </IntlProvider>
+    </ThemeProvider>
   );
 };
 
