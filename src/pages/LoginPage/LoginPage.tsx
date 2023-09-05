@@ -118,7 +118,7 @@ export const LoginPage = () => {
           <div className={s.inputContainer}>
             <Input
               label={translateMessage('input.label.username')}
-              disabled={true}
+              disabled={authLoading}
               {...getFieldProps('username')}
               {...(formErrors.username && {
                 isError: !!formErrors.username,
@@ -129,7 +129,7 @@ export const LoginPage = () => {
           <div className={s.inputContainer}>
             <PasswordInput
               label={translateMessage('input.label.password')}
-              disabled={true}
+              disabled={authLoading}
               {...getFieldProps('password')}
               {...(formErrors.password && {
                 isError: !!formErrors.password,

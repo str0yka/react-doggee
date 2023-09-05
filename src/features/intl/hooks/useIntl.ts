@@ -2,11 +2,6 @@ import { useContext } from 'react';
 
 import { IntlContext } from '..';
 
-export interface TranslateMessageParams {
-  path: string;
-  values?: Record<string, string | number | boolean>;
-}
-
 export const useIntl = () => {
   const intl = useContext(IntlContext);
 

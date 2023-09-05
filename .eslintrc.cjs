@@ -7,11 +7,15 @@ module.exports = {
   overrides: [
     {
       files: ['*.ts', '*.tsx'],
-      parserOptions: { project: ['./tsconfig.json'] },
+      parserOptions: {
+        project: ['./tsconfig.json'],
+      },
     },
   ],
   parserOptions: {
-    ecmaFeatures: { jsx: true },
+    ecmaFeatures: {
+      jsx: true,
+    },
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
@@ -31,7 +35,12 @@ module.exports = {
     'react/jsx-props-no-spreading': 0,
     'react/require-default-props': 0,
     'react/button-has-type': 0,
-    'react/no-unstable-nested-components': [2, { allowAsProps: true }],
+    'react/no-unstable-nested-components': [
+      2,
+      {
+        allowAsProps: true,
+      },
+    ],
     'react/no-array-index-key': 0,
     'class-methods-use-this': 0,
     'no-param-reassign': 0,
