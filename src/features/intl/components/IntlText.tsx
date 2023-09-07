@@ -10,7 +10,6 @@ export const IntlText: React.FC<IntlTextProps> = ({ path, values, children }) =>
   const { translateMessage } = useIntl();
   const withFunctionalKeys =
     !!values && !!Object.keys(values).filter((key) => typeof values[key] === 'function').length;
-  console.log('withFunctionalKeys', withFunctionalKeys);
 
   const translateMessageWithTags = (
     message: Message,

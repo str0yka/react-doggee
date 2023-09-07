@@ -1,1 +1,7 @@
-export const RegistrationPage = () => <h1>RegistrationPage</h1>;
+export const RegistrationPage = () => (
+  <main>
+    <div></div>
+    <div></div>
+    <div></div>
+  </main>
+);
