@@ -11,7 +11,7 @@ export const useIntl = () => {
   ) => {
     let message = intl.messages[path];
     if (!message) return path;
-    // if (!values) return message;
+    if (!values) return message;
 
     for (const key in values) {
       message = message.replace(`{${key}}`, String(values[key]));

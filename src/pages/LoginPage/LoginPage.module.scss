@@ -1,5 +1,4 @@
 .page {
-  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -20,7 +19,6 @@
   justify-content: space-between;
   align-items: center;
   border-radius: 20px;
-  background: var(--color-neutral-100);
   box-shadow: var(--shadow-container);
   overflow: hidden;
 }
@@ -38,6 +36,7 @@
   font-size: 40px;
   font-family: 'Baloo 2', Arial, Helvetica, sans-serif;
   user-select: none;
+  transition: background-color 200ms ease, background-image 200ms ease;
 
   &.light {
     background-color: var(--color-accent-default);

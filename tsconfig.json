@@ -27,6 +27,7 @@
       "~common/*": ["./src/common/*"],
       "~router": ["./src/router"],
       "~utils/api": ["./src/utils/api"],
+      "~utils/consts": ["./src/utils/consts"],
       "~utils/helpers": ["./src/utils/helpers"],
       "~utils/hooks": ["./src/utils/hooks"],
       "~features/intl": ["src/features/intl"],
@@ -34,6 +35,6 @@
       "~static/*": ["src/static/*"],
     }
   },
-  "include": ["src", "index.d.ts"],
+  "include": ["src", "index.d.ts", "src/@types/*.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

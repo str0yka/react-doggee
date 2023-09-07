@@ -6,7 +6,7 @@
   padding: 15px;
   border-radius: 5px;
   background-color: var(--color-neutral-200);
-  transition: background-color 150ms ease;
+  transition: background-color 200ms ease;
   cursor: text;
 
   &:hover,
@@ -32,6 +32,8 @@
   flex-grow: 1;
   transform: translateY(6px);
   font-size: 14px;
+  color: var(--color-neutral-500);
+  transition: color 200ms ease;
   cursor: inherit;
 }
 
@@ -39,7 +41,7 @@
   position: absolute;
   font-size: 14px;
   color: var(--color-neutral-400);
-  transition: transform 150ms ease, font-size 150ms ease;
+  transition: transform 200ms ease, font-size 200ms ease, color 200ms ease;
   pointer-events: none;
   user-select: none;
 }

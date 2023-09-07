@@ -1,7 +1,17 @@
 {
-  "page.login.createNewAccount": "Create new account",
   "input.label.username": "Username",
   "input.label.password": "Password",
+  "input.label.passwordAgain": "Password again",
   "input.label.notMyDevice": "This is't my device",
-  "button.signIn": "Sign in"
+  "button.signIn": "Sign in",
+  "button.done": "Done",
+  "page.login.createNewAccount": "Create new account",
+  "page.registration.alreadyHaveAccount": "I already have an account",
+  "page.registration.fillYourLoginData": "Fill your login data",
+  "page.registration.passwordMust": "Password must: ",
+  "page.registration.passwordMust.containNumbers": "contain <accent>numbers</accent>",
+  "page.registration.passwordMust.containUppercaseLetters": "contain <accent>uppercase</accent> letters",
+  "page.registration.passwordMust.containLowercaseLetters": "contain <accent>lowercase</accent> letters",
+  "page.registration.passwordMust.length": "contain at least <accent>{number}</accent> characters",
+  "page.registration.passwordMust.match": "<accent>match</accent>"
 }

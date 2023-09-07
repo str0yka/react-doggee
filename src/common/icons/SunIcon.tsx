@@ -14,8 +14,8 @@ export const SunIcon: React.FC<SunIconProps> = (props) => (
       fill="#F5C678"
     />
     <path
-      fill-rule="evenodd"
-      clip-rule="evenodd"
+      fillRule="evenodd"
+      clipRule="evenodd"
       d="M11.6279 25C11.6279 17.6148 17.6148 11.6279 25 11.6279C32.3852 11.6279 38.3721 17.6148 38.3721 25C38.3721 32.3852 32.3852 38.3721 25 38.3721C17.6148 38.3721 11.6279 32.3852 11.6279 25Z"
       fill="#F5C678"
     />

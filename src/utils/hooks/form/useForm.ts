@@ -37,7 +37,7 @@ export const useForm = <Values extends Object>({
     }
   };
 
-  const setFieldError = <T extends keyof Values>(field: T, error: string) => {
+  const setFieldError = <T extends keyof Values>(field: T, error: string | null) => {
     setErrors((prev) => ({ ...prev, [field]: error }));
   };
 

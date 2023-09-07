@@ -24,6 +24,10 @@ export default defineConfig({
         replacement: path.resolve(__dirname, 'src/utils/api'),
       },
       {
+        find: '~utils/consts',
+        replacement: path.resolve(__dirname, 'src/utils/consts'),
+      },
+      {
         find: '~utils/helpers',
         replacement: path.resolve(__dirname, 'src/utils/helpers'),
       },

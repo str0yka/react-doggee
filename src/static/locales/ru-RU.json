@@ -1,7 +1,12 @@
 {
-  "page.login.createNewAccount": "Создать новый аккаунт",
   "input.label.username": "Имя пользователя",
   "input.label.password": "Пароль",
+  "input.label.passwordAgain": "Повторите пароль",
   "input.label.notMyDevice": "Не моё устройство",
-  "button.signIn": "Войти"
+  "button.signIn": "Войти",
+  "button.done": "Далее",
+  "page.login.createNewAccount": "Создать новый аккаунт",
+  "page.registration.alreadyHaveAccount": "У меня уже есть аккаунт",
+  "page.registration.fillYourLoginData": "Введите свои данные",
+  "page.registration.passwordMustMatch": "Пароли должны совпадать"
 }

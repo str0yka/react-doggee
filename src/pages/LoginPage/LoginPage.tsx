@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 
-import { Button } from '~common/buttons';
+import { Button, ThemeButton } from '~common/buttons';
 import { Input, PasswordInput, Checkbox } from '~common/fields';
-import { MoonIcon, SunIcon } from '~common/icons';
 import { api } from '~utils/api';
+import { ROUTES } from '~utils/consts';
 import { getClassName, setCookie } from '~utils/helpers';
 import { useForm, useMutation } from '~utils/hooks';
 import { IntlText, useIntl } from '~features/intl';
@@ -11,23 +11,11 @@ import { useTheme } from '~features/theming';
 
 import s from './LoginPage.module.scss';
 
-interface LoginValues {
+interface LoginFormValues {
   username: string;
   password: string;
   notMyComputer: boolean;
 }
-
-type ApiSuccessResponse<T> = {
-  data: T;
-  success: true;
-};
-
-type ApiFailedResponse = {
-  data: { message: string };
-  success: false;
-};
-
-type ApiResponse<T> = ApiSuccessResponse<T> | ApiFailedResponse;
 
 interface User {
   id: string;
@@ -36,16 +24,16 @@ interface User {
 }
 
 export const LoginPage = () => {
-  const { theme, changeTheme } = useTheme();
+  const { theme } = useTheme();
   const { translateMessage } = useIntl();
 
   const {
     mutation: authMutaion,
     isLoading: authLoading,
     isError: authError,
-  } = useMutation<ApiResponse<User>, LoginValues>((values) => api.post('/auth', values));
+  } = useMutation<ApiResponse<User>, LoginFormValues>((values) => api.post('/auth', values));
 
-  const { values, errors, setFieldValue, handleSubmit } = useForm<LoginValues>({
+  const { values, errors, setFieldValue, handleSubmit } = useForm<LoginFormValues>({
     initialValues: {
       username: '',
       password: '',
@@ -67,17 +55,9 @@ export const LoginPage = () => {
     },
   });
 
-  console.log('values: ', values);
-  console.log('errors: ', errors);
-
   return (
     <main className={s.page}>
-      <button
-        className={s.themeButton}
-        onClick={() => changeTheme(theme === 'light' ? 'dark' : 'light')}
-      >
-        {theme === 'light' ? <SunIcon /> : <MoonIcon />}
-      </button>
+      <ThemeButton className={s.themeButton} />
       <section className={s.container}>
         <div className={getClassName(s.headerContainer, s[theme])}>DOGGEE</div>
         <form
@@ -123,7 +103,7 @@ export const LoginPage = () => {
         <div className={s.signUpContainer}>
           <Link
             className={s.signUpLink}
-            to="/registration"
+            to={ROUTES.REGISTRATION}
           >
             <IntlText path="page.login.createNewAccount" />
           </Link>
