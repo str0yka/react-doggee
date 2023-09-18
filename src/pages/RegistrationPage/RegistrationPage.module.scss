@@ -52,41 +52,13 @@
   user-select: none;
 }
 
-.passwordRulesContainer {
+.panelDataContainer {
   padding: 40px 30px;
   display: flex;
   flex-direction: column;
   gap: 20px;
   background-color: var(--color-neutral-100);
   transition: background-color 200ms ease;
-}
-
-.passwordRulesList {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  font-size: 14px;
-  transition: color 200ms ease;
-
-  li {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    span {
-      transition: color 200ms ease;
-
-      .passwordRuleSuccess {
-        color: var(--color-additional-default);
-        font-weight: 600;
-      }
-
-      .passwordRuleFailure {
-        color: var(--color-accent-default);
-        font-weight: 600;
-      }
-    }
-  }
 }
 
 .signInContainer {

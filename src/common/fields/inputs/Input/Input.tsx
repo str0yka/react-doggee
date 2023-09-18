@@ -1,8 +1,16 @@
 import { getClassName } from '~utils/helpers';
 
-import s from '../Input.module.scss';
+import s from './Input.module.scss';
 
-export const Input: React.FC<InputProps> = ({ isError, helperText, label, ...props }) => (
+export const Input: React.FC<InputProps> = ({
+  label,
+  isError,
+  helperText,
+  mask,
+  onChange,
+  indicator,
+  ...props
+}) => (
   <>
     <label
       aria-disabled={props.disabled}
@@ -11,8 +19,13 @@ export const Input: React.FC<InputProps> = ({ isError, helperText, label, ...pro
       <input
         {...props}
         className={s.input}
+        onChange={(event) => {
+          if (!onChange || (mask && !mask.test(event.target.value))) return;
+          onChange(event);
+        }}
       />
       <label className={s.label}>{label}</label>
+      {indicator}
     </label>
     {isError && helperText && <p className={s.helperText}>{helperText}</p>}
   </>

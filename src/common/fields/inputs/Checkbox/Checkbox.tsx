@@ -1,6 +1,8 @@
 import s from './Checkbox.module.scss';
 
-export const Checkbox: React.FC<InputProps> = ({ label, ...props }) => (
+interface CheckboxProps extends InputProps {}
+
+export const Checkbox: React.FC<CheckboxProps> = ({ label, ...props }) => (
   <label className={s.checkboxContainer}>
     <input
       {...props}

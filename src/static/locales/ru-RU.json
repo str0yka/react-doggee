@@ -8,5 +8,10 @@
   "page.login.createNewAccount": "Создать новый аккаунт",
   "page.registration.alreadyHaveAccount": "У меня уже есть аккаунт",
   "page.registration.fillYourLoginData": "Введите свои данные",
-  "page.registration.passwordMustMatch": "Пароли должны совпадать"
+  "page.registration.passwordRules.passwordMust": "Пароль должен:",
+  "page.registration.passwordRules.containNumbers": "Содержать <rule>цифры</rule>",
+  "page.registration.passwordRules.containUppercase": "Содержать <rule>большие</rule> буквы",
+  "page.registration.passwordRules.containLowercase": "Содержать <rule>маленькие</rule> буквы",
+  "page.registration.passwordRules.containAtLeast8Characters": "Содержать как минимум <rule>8</rule> символов",
+  "page.registration.passwordRules.mustMatch": "Пароли должны <rule>совпадать</rule>"
 }

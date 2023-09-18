@@ -4,3 +4,5 @@ export * from './MoonIcon';
 export * from './SunIcon';
 export * from './TickIcon';
 export * from './WarningIcon';
+export * from './CalendarIcon';
+export * from './ArrowIcon';

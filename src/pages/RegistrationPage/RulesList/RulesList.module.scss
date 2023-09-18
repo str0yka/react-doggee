@@ -1,0 +1,13 @@
+.passwordRules {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+  transition: color 200ms ease;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+}

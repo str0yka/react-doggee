@@ -1,3 +1,4 @@
 export * from './intl';
 export * from './cookies';
-export * from './classnames/getClassName';
+export * from './classnames';
+export * from './date';
