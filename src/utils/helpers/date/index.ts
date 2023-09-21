@@ -8,3 +8,5 @@ export * from './getMonthNumberOfDays';
 export * from './getMonthsNames';
 export * from './getWeekDaysNames';
 export * from './getWeekNumber';
+export * from './checkMonthsIsEqual';
+export * from './checkIsThisMonth';

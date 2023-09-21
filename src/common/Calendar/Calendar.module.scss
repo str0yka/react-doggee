@@ -1,6 +1,5 @@
 .calendarContainer {
   width: 200px;
-  height: 200px;
   display: flex;
   flex-direction: column;
   border-radius: 5px;
@@ -19,7 +18,9 @@
 }
 
 .calendarHeaderTitle {
+  flex-grow: 1;
   font-size: 12px;
+  cursor: pointer;
 }
 
 .calendarHeaderArrow {
@@ -58,22 +59,19 @@
   color: var(--color-additional-default);
 }
 
-.calendarDaysContainer {
-  flex-grow: 1;
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-}
-
-.calendarDayItem {
+.calendarItem {
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 5px;
   cursor: pointer;
-
-  &.calendarDayItemToday {
+  
+  &.calendarItemToday {
     background-color: var(--color-neutral-100)
+  }
+
+  &.calendarItemSelected {
+    background-color: var(--color-additional-light);
   }
 
   &:hover {
@@ -81,6 +79,39 @@
   }
 }
 
+.calendarDaysContainer {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  gap: 2px;
+}
+
+.calendarItemDay {
+  padding: 5px; 
+}
+
 .calendarDay {
   font-size: 10px;
+
+  &.caledarDayAdditional {
+    color: var(--color-neutral-400);
+    font-weight: 300;
+  }
+}
+
+.calendarMonthsContainer {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 5px;
+}
+
+.calendarItemMonth {
+  padding: 9px 0;
+}
+
+.calendarMonth {
+  font-size: 12px;
 }
