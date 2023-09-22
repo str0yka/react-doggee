@@ -1,66 +1,29 @@
-import { useState, useMemo } from 'react';
 import {
   checkDateIsEqual,
-  checkIsThisMonth,
   checkIsToday,
-  checkMonthsIsEqual,
   createDate,
   createMonth,
   getClassName,
-  getMonthNumberOfDays,
-  getMonthsNames,
-  getWeekDaysNames,
 } from '~utils/helpers';
 import { ArrowIcon } from '~common/icons';
 
 import s from './Calendar.module.scss';
+import { useCalendar } from './hooks/useCalendar';
 
-const locale = 'ru-RU';
+interface CalendarProps {
+  locale?: string;
+  firstWeekDayNumber?: number;
+  selectedDate: Date;
+  selectDate: (date: Date) => void;
+}
 
-export const Caledar = () => {
-  const [mode, setMode] = useState<'days' | 'months' | 'years'>('days');
-
-  const [selectedDate, setSelectedDate] = useState(createDate());
-  const [selectedMonth, setSelectedMonth] = useState(
-    createDate({ date: selectedDate.date, locale }),
-  );
-  const [selectedYear, setSelectedYear] = useState(selectedDate.year);
-  const monthsNames = getMonthsNames(locale);
-  const weekDaysNames = useMemo(() => getWeekDaysNames(2, locale), []);
-  const month = useMemo(() => createMonth({ date: selectedMonth.date, locale }), [selectedMonth]);
-  const days = useMemo(() => month.createMonthDays(), [month]);
-
-  console.log('monthsNames: ', monthsNames);
-
-  const calendarDays = useMemo(() => {
-    const prevMonth = createMonth({
-      date: new Date(selectedMonth.year, selectedMonth.monthIndex - 1, 1),
-      locale,
-    });
-    const nextMonth = createMonth({
-      date: new Date(selectedMonth.year, selectedMonth.monthIndex + 1, 1),
-      locale,
-    });
-
-    const countOfDaysInPrevMonth = getMonthNumberOfDays(prevMonth.monthIndex, prevMonth.year);
-
-    const firstDayInCurrentMonth = days[0];
-
-    const calendarTotalCountOfDays = 7 * 6;
-
-    const countOfPrevMonthDays =
-      firstDayInCurrentMonth.dayNumberInWeek - 2 < 0
-        ? 7 - firstDayInCurrentMonth.dayNumberInWeek - 1
-        : firstDayInCurrentMonth.dayNumberInWeek - 2;
-    const countOfPNextMonthDays = calendarTotalCountOfDays - (countOfPrevMonthDays + days.length);
-
-    const prevMonthDays = prevMonth
-      .createMonthDays()
-      .slice(countOfDaysInPrevMonth - 1 - countOfPrevMonthDays, -1);
-    const nextMonthDays = nextMonth.createMonthDays().slice(0, countOfPNextMonthDays);
-
-    return [prevMonthDays, days, nextMonthDays].flat();
-  }, [selectedMonth]);
+export const Calendar: React.FC<CalendarProps> = ({
+  locale = 'default',
+  firstWeekDayNumber = 2,
+  selectedDate: date,
+  selectDate,
+}) => {
+  const { state, functions } = useCalendar({ locale, firstWeekDayNumber, selectedDate: date });
 
   return (
     <div className={s.calendarContainer}>
@@ -68,57 +31,49 @@ export const Caledar = () => {
         <button
           className={getClassName(s.calendarHeaderArrow, s.calendarHeaderArrowLeft)}
           type="button"
-          onClick={() =>
-            setSelectedMonth((prev) =>
-              createDate({ date: new Date(prev.year, prev.monthIndex - 1, 1) }),
-            )
-          }
+          onClick={() => functions.onClickArrow('left')}
         >
           <ArrowIcon />
         </button>
-        {mode === 'days' && (
+        {state.mode === 'days' && (
           <button
             className={s.calendarHeaderTitle}
             type="button"
-            onClick={() => setMode('months')}
+            onClick={() => functions.setMode('months')}
           >
-            {month.monthName} {month.year}
+            {state.selectedMonth.monthName} {state.selectedYear}
           </button>
         )}
-        {mode === 'months' && (
+        {state.mode === 'months' && (
           <button
             className={s.calendarHeaderTitle}
             type="button"
-            onClick={() => setMode('years')}
+            onClick={() => functions.setMode('years')}
           >
-            {month.year}
+            {state.selectedYear}
           </button>
         )}
-        {mode === 'years' && (
+        {state.mode === 'years' && (
           <button
             className={s.calendarHeaderTitle}
             type="button"
           >
-            {month.year}
+            {state.selectedYearInterval[1]} - {state.selectedYearInterval[10]}
           </button>
         )}
         <button
-          className={getClassName(getClassName(s.calendarHeaderArrow, s.calendarHeaderArrowRight))}
+          className={getClassName(s.calendarHeaderArrow, s.calendarHeaderArrowRight)}
           type="button"
-          onClick={() =>
-            setSelectedMonth((prev) =>
-              createDate({ date: new Date(prev.year, prev.monthIndex + 1, 1) }),
-            )
-          }
+          onClick={() => functions.onClickArrow('right')}
         >
           <ArrowIcon />
         </button>
       </div>
       <div className={s.calendarBodyContainer}>
-        {mode === 'days' && (
+        {state.mode === 'days' && (
           <>
             <ul className={s.calendarWeekDaysContainer}>
-              {weekDaysNames.map((weekDay) => (
+              {state.weekDaysNames.map((weekDay) => (
                 <li
                   key={weekDay.day}
                   className={s.calendarWeekDayItem}
@@ -128,49 +83,107 @@ export const Caledar = () => {
               ))}
             </ul>
             <ul className={s.calendarDaysContainer}>
-              {calendarDays.map((day) => (
-                <li
-                  key={day.timestamp}
-                  className={getClassName(
-                    s.calendarItem,
-                    s.calendarItemDay,
-                    checkIsToday(day.date) && s.calendarItemToday,
-                    checkDateIsEqual(selectedDate.date, day.date) && s.calendarItemSelected,
-                  )}
-                  onClick={() => setSelectedDate(createDate({ date: day.date, locale }))}
-                >
-                  <span
+              {state.calendarDays.map((day) => {
+                const isToday = checkIsToday(day.date);
+                const isSelectedDay = checkDateIsEqual(day.date, state.selectedDay.date);
+                const isAdditionalDay = day.monthIndex !== state.selectedMonth.monthIndex;
+
+                return (
+                  <li
+                    key={day.timestamp}
                     className={getClassName(
-                      s.calendarDay,
-                      !checkMonthsIsEqual(day.date, selectedMonth.date) && s.caledarDayAdditional,
+                      s.calendarItem,
+                      s.calendarItemDay,
+                      isToday && s.calendarItemToday,
+                      isSelectedDay && s.calendarItemSelected,
                     )}
+                    onClick={() => {
+                      functions.setSelectedDay(createDate({ date: day.date, locale }));
+                      selectDate(day.date);
+                    }}
                   >
-                    {day.dayNumber}
-                  </span>
-                </li>
-              ))}
+                    <span
+                      className={getClassName(
+                        s.calendarDay,
+                        isAdditionalDay && s.caledarDayAdditional,
+                      )}
+                    >
+                      {day.dayNumber}
+                    </span>
+                  </li>
+                );
+              })}
             </ul>
           </>
         )}
-        {mode === 'months' && (
+        {state.mode === 'months' && (
           <ul className={s.calendarMonthsContainer}>
-            {monthsNames.map((month) => (
-              <li
-                key={month.monthIndex}
-                className={getClassName(
-                  s.calendarItem,
-                  s.calendarItemMonth,
-                  checkIsThisMonth(month.date) && s.calendarItemToday,
-                  checkMonthsIsEqual(month.date, selectedDate.date) && s.calendarItemSelected,
-                )}
-                onClick={() => {
-                  setMode('days');
-                  setSelectedMonth(createDate({ date: month.date, locale }));
-                }}
-              >
-                <span className={s.calendarMonth}>{month.monthShort}</span>
-              </li>
-            ))}
+            {state.monthsNames.map((monthsName) => {
+              const isCurrentMonth =
+                new Date().getMonth() === monthsName.monthIndex &&
+                new Date().getFullYear() === state.selectedYear;
+              const isSelectedMonth =
+                state.selectedMonth.monthIndex === monthsName.monthIndex &&
+                state.selectedYear === state.selectedDay.year;
+
+              return (
+                <li
+                  key={monthsName.monthIndex}
+                  className={getClassName(
+                    s.calendarItem,
+                    s.calendarItemMonth,
+                    isCurrentMonth && s.calendarItemToday,
+                    isSelectedMonth && s.calendarItemSelected,
+                  )}
+                  onClick={() => {
+                    functions.setSelectedMonth(
+                      createMonth({
+                        date: new Date(state.selectedYear, monthsName.monthIndex),
+                        locale,
+                      }),
+                    );
+                    functions.setMode('days');
+                  }}
+                >
+                  <span className={s.calendarMonth}>{monthsName.monthShort}</span>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+        {state.mode === 'years' && (
+          <ul className={s.calendarYearsContainer}>
+            {state.selectedYearInterval.map((year) => {
+              const isCurrentYear = new Date().getFullYear() === year;
+              const isSelectedYear = state.selectedDay.year === year;
+              const isAdditionalYear =
+                Math.floor(year / 10) !== Math.floor(state.selectedYearInterval[1] / 10);
+
+              return (
+                <li
+                  key={year}
+                  className={getClassName(
+                    s.calendarItem,
+                    s.calendarItemMonth,
+                    isCurrentYear && s.calendarItemToday,
+                    isSelectedYear && s.calendarItemSelected,
+                  )}
+                  onClick={() => {
+                    functions.setSelectedYear(year);
+                    functions.setMode('months');
+                  }}
+                >
+                  <span
+                    className={getClassName(
+                      s.calendarYear,
+                      isAdditionalYear && s.caledarYearAdditional,
+                    )}
+                  >
+                    {year}
+                  </span>
+                </li>
+              );
+            })}
           </ul>
         )}
       </div>

@@ -115,3 +115,21 @@
 .calendarMonth {
   font-size: 12px;
 }
+
+.calendarYearsContainer {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 5px;
+}
+
+.calendarYear {
+  font-size: 12px;
+
+  &.caledarYearAdditional {
+    color: var(--color-neutral-400);
+    font-weight: 300;
+  }
+}
+

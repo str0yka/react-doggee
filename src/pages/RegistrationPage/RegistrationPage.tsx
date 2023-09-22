@@ -11,7 +11,7 @@ import { useIntl, IntlText } from '~features/intl';
 import { RulesList } from './RulesList/RulesList';
 import s from './RegistrationPage.module.scss';
 import { useState } from 'react';
-import { Caledar } from '~common/Calendar/Calendar';
+import { Calendar } from '~common/Calendar/Calendar';
 
 interface RegistrationFormValues {
   username: string;
@@ -107,7 +107,12 @@ export const RegistrationPage = () => {
           <h1 className={s.formTitle}>
             <IntlText path="page.registration.fillYourLoginData" />
           </h1>
-          <Caledar />
+          <Calendar
+            locale="default"
+            selectDate={(date) => console.log('date: ', date)}
+            selectedDate={new Date()}
+            firstWeekDayNumber={2}
+          />
           <div className={s.inputContainer}>
             {/* <Input
               label={translateMessage('input.label.username')}
