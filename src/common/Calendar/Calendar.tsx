@@ -7,8 +7,8 @@ import {
 } from '~utils/helpers';
 import { ArrowIcon } from '~common/icons';
 
-import s from './Calendar.module.scss';
 import { useCalendar } from './hooks/useCalendar';
+import s from './Calendar.module.scss';
 
 interface CalendarProps {
   locale?: string;
@@ -123,8 +123,8 @@ export const Calendar: React.FC<CalendarProps> = ({
                 new Date().getMonth() === monthsName.monthIndex &&
                 new Date().getFullYear() === state.selectedYear;
               const isSelectedMonth =
-                state.selectedMonth.monthIndex === monthsName.monthIndex &&
-                state.selectedYear === state.selectedDay.year;
+                state.selectedDay.monthIndex === monthsName.monthIndex &&
+                state.selectedDay.year === state.selectedYear;
 
               return (
                 <li

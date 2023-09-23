@@ -12,6 +12,7 @@ import { RulesList } from './RulesList/RulesList';
 import s from './RegistrationPage.module.scss';
 import { useState } from 'react';
 import { Calendar } from '~common/Calendar/Calendar';
+import { RegistrationWizardContainer } from './wizard/RegistrationWizardContainer/RegistrationWizardContainer';
 
 interface RegistrationFormValues {
   username: string;
@@ -36,7 +37,7 @@ const validatePassword = (value: string) => {
 export const RegistrationPage = () => {
   const [step, setStep] = useState<'registration' | 'profile' | 'pets' | 'check'>('registration');
 
-  const { translateMessage } = useIntl();
+  const { translateMessage, locale } = useIntl();
 
   const { mutation: registrationMutaion, isLoading: registrationLoading } = useMutation<
     ApiResponse<User>,
@@ -98,150 +99,129 @@ export const RegistrationPage = () => {
 
   if (step === 'registration') {
     return (
-      <main className={s.page}>
-        <ThemeButton className={s.themeButton} />
-        <form
-          className={s.formContainer}
-          onSubmit={handleSubmit}
-        >
-          <h1 className={s.formTitle}>
-            <IntlText path="page.registration.fillYourLoginData" />
-          </h1>
-          <Calendar
-            locale="default"
-            selectDate={(date) => console.log('date: ', date)}
-            selectedDate={new Date()}
-            firstWeekDayNumber={2}
-          />
-          <div className={s.inputContainer}>
-            {/* <Input
-              label={translateMessage('input.label.username')}
-              isError={!!errors.username}
-              helperText={errors.username || ''}
-              disabled={registrationLoading}
-              value={values.username}
-              onChange={(event) => setFieldValue('username', event.target.value)}
-            /> */}
-            <DateInput label="Your birthday" />
-          </div>
-          <div className={s.inputContainer}>
-            <PasswordInput
-              label={translateMessage('input.label.password')}
-              isError={!!errors.password}
-              helperText={errors.password || ''}
-              mask={/^[a-zA-Z0-9!;,.]+$/g}
-              disabled={registrationLoading}
-              value={values.password}
-              onChange={(event) => setFieldValue('password', event.target.value)}
-            />
-          </div>
-          <div className={s.inputContainer}>
-            <PasswordInput
-              label={translateMessage('input.label.passwordAgain')}
-              isError={!!errors.passwordAgain}
-              helperText={errors.passwordAgain || ''}
-              mask={/^[a-zA-Z0-9!;,.]+$/g}
-              disabled={registrationLoading}
-              value={values.passwordAgain}
-              onChange={(event) => {
-                setFieldValue('passwordAgain', event.target.value);
-                if (values.password !== event.target.value) {
-                  setFieldError('passwordAgain', 'passwrods must match');
-                } else {
-                  setFieldError('passwordAgain', null);
-                }
-              }}
-            />
-          </div>
-          <Button
-            isLoading={registrationLoading}
-            type="submit"
-          >
-            <IntlText path="button.done" />
-          </Button>
-        </form>
-        <div className={s.panelContainer}>
-          <div className={getClassName(s.headerContainer)}>DOGGEE</div>
-          <div className={s.panelDataContainer}>
-            <RulesList rulesList={rulesList} />
-          </div>
-          <div className={s.signInContainer}>
-            <Link
-              className={s.signInLink}
-              to={ROUTES.LOGIN}
+      <RegistrationWizardContainer
+        form={{
+          title: <IntlText path="page.registration.fillYourLoginData" />,
+          content: (
+            <form
+              className={s.formContainer}
+              onSubmit={handleSubmit}
             >
+              <div className={s.inputContainer}>
+                <Input
+                  label={translateMessage('input.label.username')}
+                  isError={!!errors.username}
+                  helperText={errors.username || ''}
+                  disabled={registrationLoading}
+                  value={values.username}
+                  onChange={(event) => setFieldValue('username', event.target.value)}
+                />
+              </div>
+              <div className={s.inputContainer}>
+                <PasswordInput
+                  label={translateMessage('input.label.password')}
+                  isError={!!errors.password}
+                  helperText={errors.password || ''}
+                  mask={/^[a-zA-Z0-9!;,.]+$/g}
+                  disabled={registrationLoading}
+                  value={values.password}
+                  onChange={(event) => setFieldValue('password', event.target.value)}
+                />
+              </div>
+              <div className={s.inputContainer}>
+                <PasswordInput
+                  label={translateMessage('input.label.passwordAgain')}
+                  isError={!!errors.passwordAgain}
+                  helperText={errors.passwordAgain || ''}
+                  mask={/^[a-zA-Z0-9!;,.]+$/g}
+                  disabled={registrationLoading}
+                  value={values.passwordAgain}
+                  onChange={(event) => {
+                    setFieldValue('passwordAgain', event.target.value);
+                    if (values.password !== event.target.value) {
+                      setFieldError('passwordAgain', 'passwrods must match');
+                    } else {
+                      setFieldError('passwordAgain', null);
+                    }
+                  }}
+                />
+              </div>
+              <Button
+                isLoading={registrationLoading}
+                type="submit"
+              >
+                <IntlText path="button.done" />
+              </Button>
+            </form>
+          ),
+        }}
+        panel={{
+          data: <RulesList rulesList={rulesList} />,
+          footer: (
+            <Link to={ROUTES.LOGIN}>
               <IntlText path="page.registration.alreadyHaveAccount" />
             </Link>
-          </div>
-        </div>
-      </main>
+          ),
+        }}
+      />
     );
   }
 
   if (step === 'profile') {
     return (
-      <main className={s.page}>
-        <ThemeButton className={s.themeButton} />
-        <form
-          className={s.formContainer}
-          onSubmit={handleSubmit}
-        >
-          <h1 className={s.formTitle}>
-            <IntlText path="page.registration.fillYourLoginData" />
-          </h1>
-          <div className={s.inputContainer}>
-            <Input
-              label={translateMessage('input.label.username')}
-              isError={!!errors.username}
-              helperText={errors.username || ''}
-              disabled={registrationLoading}
-              value={values.username}
-              onChange={(event) => setFieldValue('username', event.target.value)}
-            />
-          </div>
-          <div className={s.inputContainer}>
-            <Input
-              label={translateMessage('input.label.username')}
-              isError={!!errors.username}
-              helperText={errors.username || ''}
-              disabled={registrationLoading}
-              value={values.username}
-              onChange={(event) => setFieldValue('username', event.target.value)}
-            />
-          </div>
-          <div className={s.inputContainer}>
-            <Input
-              label={translateMessage('input.label.username')}
-              isError={!!errors.username}
-              helperText={errors.username || ''}
-              disabled={registrationLoading}
-              value={values.username}
-              onChange={(event) => setFieldValue('username', event.target.value)}
-            />
-          </div>
-          <Button
-            isLoading={registrationLoading}
-            type="submit"
-          >
-            <IntlText path="button.done" />
-          </Button>
-        </form>
-        <div className={s.panelContainer}>
-          <div className={getClassName(s.headerContainer)}>DOGGEE</div>
-          <div className={s.panelDataContainer}>
-            We want to know your address so that we can suggest good places for walks with your pet,
-            the nearest veterinary clinics, etc.
-          </div>
-          <div className={s.signInContainer}>
-            <Link
-              className={s.signInLink}
-              to={ROUTES.LOGIN}
+      <RegistrationWizardContainer
+        form={{
+          title: <IntlText path="page.registration.fillYourLoginData" />,
+          content: (
+            <form
+              className={s.formContainer}
+              onSubmit={handleSubmit}
             >
-              <IntlText path="page.registration.alreadyHaveAccount" />
-            </Link>
-          </div>
-        </div>
-      </main>
+              <div className={s.inputContainer}>
+                <Input
+                  label={translateMessage('input.label.username')}
+                  isError={!!errors.username}
+                  helperText={errors.username || ''}
+                  disabled={registrationLoading}
+                  value={values.username}
+                  onChange={(event) => setFieldValue('username', event.target.value)}
+                />
+              </div>
+              <div className={s.inputContainer}>
+                <Input
+                  label={translateMessage('input.label.username')}
+                  isError={!!errors.username}
+                  helperText={errors.username || ''}
+                  disabled={registrationLoading}
+                  value={values.username}
+                  onChange={(event) => setFieldValue('username', event.target.value)}
+                />
+              </div>
+              <div className={s.inputContainer}>
+                <Input
+                  label={translateMessage('input.label.username')}
+                  isError={!!errors.username}
+                  helperText={errors.username || ''}
+                  disabled={registrationLoading}
+                  value={values.username}
+                  onChange={(event) => setFieldValue('username', event.target.value)}
+                />
+              </div>
+              <Button
+                isLoading={registrationLoading}
+                type="submit"
+              >
+                <IntlText path="button.done" />
+              </Button>
+            </form>
+          ),
+        }}
+        panel={{
+          data: `We want to know your address so that we can suggest good places for walks with your pet,
+        the nearest veterinary clinics, etc.`,
+          footer: <IntlText path="page.registration.alreadyHaveAccount" />,
+        }}
+      />
     );
   }
 };

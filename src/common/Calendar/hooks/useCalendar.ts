@@ -74,7 +74,7 @@ export const useCalendar = ({
   }, [selectedMonth, selectedYear]);
 
   const setSelectedMonthByIndex = (monthIndex: number) => {
-    setSelectedMonth(createMonth({ date: new Date(selectedYear, monthIndex) }));
+    setSelectedMonth(createMonth({ date: new Date(selectedYear, monthIndex), locale }));
   };
 
   const onClickArrow = (direction: 'left' | 'right') => {

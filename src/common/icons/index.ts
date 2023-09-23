@@ -6,3 +6,4 @@ export * from './TickIcon';
 export * from './WarningIcon';
 export * from './CalendarIcon';
 export * from './ArrowIcon';
+export * from './DropDownIcon';

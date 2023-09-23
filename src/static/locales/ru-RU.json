@@ -3,6 +3,7 @@
   "input.label.password": "Пароль",
   "input.label.passwordAgain": "Повторите пароль",
   "input.label.notMyDevice": "Не моё устройство",
+  "input.label.yourBirthday": "Дата рождения",
   "button.signIn": "Войти",
   "button.done": "Далее",
   "page.login.createNewAccount": "Создать новый аккаунт",

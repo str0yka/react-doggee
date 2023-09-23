@@ -3,6 +3,7 @@
   "input.label.password": "Password",
   "input.label.passwordAgain": "Password again",
   "input.label.notMyDevice": "This is't my device",
+  "input.label.yourBirthday": "Your Birthday",
   "button.signIn": "Sign in",
   "button.done": "Done",
   "page.login.createNewAccount": "Create new account",
