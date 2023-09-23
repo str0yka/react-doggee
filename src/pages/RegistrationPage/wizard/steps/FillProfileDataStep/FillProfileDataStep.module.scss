@@ -1,0 +1,12 @@
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 15px;
+}
+
+.panelData {
+  color: var(--color-accent-default);
+  font-size: 14px;
+  font-weight: 600;
+}

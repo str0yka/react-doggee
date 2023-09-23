@@ -1,5 +1,4 @@
 import { ThemeButton } from '~common/buttons';
-import { getClassName } from '~utils/helpers';
 
 import s from './RegistrationWizardContainer.module.scss';
 

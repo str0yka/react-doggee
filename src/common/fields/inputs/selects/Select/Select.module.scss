@@ -1,0 +1,54 @@
+.indicatorContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.indicator {
+  transition: transform 200ms ease;
+
+  &.indicatorActive {
+    transform: rotate(180deg);
+  }
+
+  path {
+    fill: var(--color-neutral-400);
+    transition: fill 200ms ease;
+  }
+}
+
+.selectContainer {
+  position: relative;
+}
+
+.optionsContainer {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  right: 0;
+  z-index: 10;
+  border-radius: 5px;
+  background-color: var(--color-neutral-200);
+  overflow: hidden;
+}
+
+.option {
+  width: 100%;
+  padding: 6.5px 20px;
+  display: flex;
+  background-color: var(--color-neutral-200);
+  color: var(--color-neutral-400);
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+
+  &:hover,
+  &.optionFocused {
+    background-color: var(--color-additional-light);
+  }
+
+  &.optionSelected {
+    background-color: var(--color-additional-default);
+    color: var(--color-neutral-500);
+  }
+}

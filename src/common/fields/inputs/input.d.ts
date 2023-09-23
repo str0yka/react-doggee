@@ -1,4 +1,4 @@
-interface InputProps extends Omit<React.ComponentProps<'input'>, 'placeholder'> {
+interface InputProps extends Omit<React.ComponentProps<'input'>, 'placeholder' | 'ref'> {
   label: string;
   isError?: boolean;
   helperText?: string;
