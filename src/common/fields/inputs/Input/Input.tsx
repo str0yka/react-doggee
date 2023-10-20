@@ -9,8 +9,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     <>
       <label
         aria-disabled={props.disabled}
-        className={getClassName(s.inputContainer, isError && s.error)}
-      >
+        className={getClassName(s.inputContainer, isError && s.error)}>
         <input
           {...props}
           ref={ref}
@@ -26,4 +25,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       {isError && helperText && <p className={s.helperText}>{helperText}</p>}
     </>
   ),
+);
+
+interface InputWrapperProps {
+  children: React.ReactNode;
+}
+
+export const InputWrapper: React.FC<InputWrapperProps> = ({ children }) => (
+  <div className={s.inputWrapper}>{children}</div>
 );

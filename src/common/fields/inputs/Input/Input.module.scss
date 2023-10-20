@@ -46,8 +46,11 @@
   user-select: none;
 }
 
+.inputWrapper:active .label,
+.inputWrapper:focus-within .label,
+.inputContainer:active .label,
 .inputContainer:focus-within .label,
-.input:not([value=""]) + .label {
+.input:not([value='']) + .label {
   transform: translate(-5px, -10px);
   font-size: 10px;
 }

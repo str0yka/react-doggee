@@ -35,6 +35,21 @@ const OPTIONS = [
   { label: 'Лабрадор', value: 3, option: 3 },
   { label: 'Такса', value: 4, option: 4 },
   { label: 'Чихуахуа', value: 5, option: 5 },
+  { label: 'Акита Ину', value: 11, option: 11 },
+  { label: 'Мопс', value: 12, option: 12 },
+  { label: 'Лабрадор', value: 13, option: 13 },
+  { label: 'Такса', value: 14, option: 14 },
+  { label: 'Чихуахуа', value: 15, option: 15 },
+  { label: 'Акита Ину', value: 21, option: 21 },
+  { label: 'Мопс', value: 22, option: 22 },
+  { label: 'Лабрадор', value: 23, option: 23 },
+  { label: 'Такса', value: 24, option: 24 },
+  { label: 'Чихуахуа', value: 25, option: 25 },
+  { label: 'Акита Ину', value: 31, option: 31 },
+  { label: 'Мопс', value: 32, option: 32 },
+  { label: 'Лабрадор', value: 33, option: 33 },
+  { label: 'Такса', value: 34, option: 34 },
+  { label: 'Чихуахуа', value: 35, option: 35 },
 ];
 
 interface RegistrationFormValues {
@@ -113,13 +128,12 @@ export const FillLoginDataStep: React.FC<FillLoginDataStepProps> = ({ setStep })
         content: (
           <form
             className={s.formContainer}
-            onSubmit={handleSubmit}
-          >
+            onSubmit={handleSubmit}>
             <Select
               label="Dog's breed"
               options={OPTIONS}
-              option={OPTIONS.find((option) => option.value === values.dogBree)!}
-              onChange={(option) => setFieldValue('dogBree', option.option)}
+              defaultOption={OPTIONS.find((option) => option.value === values.dogBree)!}
+              onSelect={(value) => setFieldValue('dogBree', Number(value))}
             />
             <div>
               <Input
@@ -162,8 +176,7 @@ export const FillLoginDataStep: React.FC<FillLoginDataStepProps> = ({ setStep })
             </div>
             <Button
               isLoading={registrationLoading}
-              type="submit"
-            >
+              type="submit">
               <IntlText path="button.done" />
             </Button>
           </form>
