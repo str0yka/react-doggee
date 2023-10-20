@@ -1,62 +1,26 @@
 import { Link } from 'react-router-dom';
 
 import { Button } from '~common/buttons';
-import { Input, PasswordInput, Select } from '~common/fields';
+import { Input, PasswordInput } from '~common/fields';
 import { IntlText, useIntl } from '~features/intl';
 import { useForm, useMutation } from '~utils/hooks';
 import { api } from '~utils/api';
 import { ROUTES } from '~utils/consts';
 
 import { RegistrationWizardContainer } from '../../RegistrationWizardContainer/RegistrationWizardContainer';
-import { RulesList } from '../../../RulesList/RulesList';
+import { Rules } from './components';
+import { PASSWORD_AGAIN_RULES, PASSWORD_RULES } from './constants';
+import { validatePassword } from './helpers';
 import s from './FillLoginDataStep.module.scss';
 
-interface User {
-  id: string;
-  username: string;
-  password: string;
-}
-
-const validatePassword = (value: string) => {
-  if (value === value.replace(/[0-9]/g, '')) return 'password must contain numbers';
-  if (value === value.toUpperCase()) return 'password must contain lowercase letters';
-  if (value === value.toLowerCase()) return 'password must contain uppercase letters';
-  if (value.length < 8) return 'password must contain at least 8 characters';
-  return null;
-};
-
-interface FillLoginDataStepProps {
-  setStep: (step: 'registration' | 'profile' | 'pets' | 'check') => void; // FIXME
-}
-
-const OPTIONS = [
-  { label: 'Акита Ину', value: 1, option: 1 },
-  { label: 'Мопс', value: 2, option: 2 },
-  { label: 'Лабрадор', value: 3, option: 3 },
-  { label: 'Такса', value: 4, option: 4 },
-  { label: 'Чихуахуа', value: 5, option: 5 },
-  { label: 'Акита Ину', value: 11, option: 11 },
-  { label: 'Мопс', value: 12, option: 12 },
-  { label: 'Лабрадор', value: 13, option: 13 },
-  { label: 'Такса', value: 14, option: 14 },
-  { label: 'Чихуахуа', value: 15, option: 15 },
-  { label: 'Акита Ину', value: 21, option: 21 },
-  { label: 'Мопс', value: 22, option: 22 },
-  { label: 'Лабрадор', value: 23, option: 23 },
-  { label: 'Такса', value: 24, option: 24 },
-  { label: 'Чихуахуа', value: 25, option: 25 },
-  { label: 'Акита Ину', value: 31, option: 31 },
-  { label: 'Мопс', value: 32, option: 32 },
-  { label: 'Лабрадор', value: 33, option: 33 },
-  { label: 'Такса', value: 34, option: 34 },
-  { label: 'Чихуахуа', value: 35, option: 35 },
-];
-
-interface RegistrationFormValues {
+interface RegistrationValues {
   username: string;
   password: string;
   passwordAgain: string;
-  dogBree: (typeof OPTIONS)[number]['option'];
+}
+
+interface FillLoginDataStepProps {
+  setStep: (step: 'registration' | 'profile' | 'pets' | 'check') => void; // FIXME
 }
 
 export const FillLoginDataStep: React.FC<FillLoginDataStepProps> = ({ setStep }) => {
@@ -64,16 +28,15 @@ export const FillLoginDataStep: React.FC<FillLoginDataStepProps> = ({ setStep })
 
   const { mutation: registrationMutaion, isLoading: registrationLoading } = useMutation<
     ApiResponse<User>,
-    Omit<RegistrationFormValues, 'passwordAgain'>
+    Omit<RegistrationValues, 'passwordAgain'>
   >((values) => api.post('/registration', values));
 
   const { values, errors, handleSubmit, setFieldValue, setFieldError } =
-    useForm<RegistrationFormValues>({
+    useForm<RegistrationValues>({
       initialValues: {
         username: '',
         password: '',
         passwordAgain: '',
-        dogBree: 3,
       },
       onSubmit: async (values) => {
         try {
@@ -89,38 +52,6 @@ export const FillLoginDataStep: React.FC<FillLoginDataStepProps> = ({ setStep })
       },
     });
 
-  const rulesList: RulesList = [
-    {
-      title: 'page.registration.passwordRules.passwordMust',
-      rules: [
-        {
-          title: 'page.registration.passwordRules.containNumbers',
-          isCorrect: values.password !== values.password.replace(/[0-9]/g, ''),
-        },
-        {
-          title: 'page.registration.passwordRules.containUppercase',
-          isCorrect: values.password !== values.password.toLowerCase(),
-        },
-        {
-          title: 'page.registration.passwordRules.containLowercase',
-          isCorrect: values.password !== values.password.toUpperCase(),
-        },
-        {
-          title: 'page.registration.passwordRules.containAtLeast8Characters',
-          isCorrect: values.password.length >= 8,
-        },
-      ],
-    },
-    {
-      rules: [
-        {
-          title: 'page.registration.passwordRules.mustMatch',
-          isCorrect: values.password === values.passwordAgain,
-        },
-      ],
-    },
-  ];
-
   return (
     <RegistrationWizardContainer
       form={{
@@ -129,12 +60,6 @@ export const FillLoginDataStep: React.FC<FillLoginDataStepProps> = ({ setStep })
           <form
             className={s.formContainer}
             onSubmit={handleSubmit}>
-            <Select
-              label="Dog's breed"
-              options={OPTIONS}
-              defaultOption={OPTIONS.find((option) => option.value === values.dogBree)!}
-              onSelect={(value) => setFieldValue('dogBree', Number(value))}
-            />
             <div>
               <Input
                 label={translateMessage('input.label.username')}
@@ -148,20 +73,18 @@ export const FillLoginDataStep: React.FC<FillLoginDataStepProps> = ({ setStep })
             <div>
               <PasswordInput
                 label={translateMessage('input.label.password')}
-                isError={!!errors.password}
-                helperText={errors.password || ''}
-                mask={/^[a-zA-Z0-9!;,.]+$/g}
                 disabled={registrationLoading}
                 value={values.password}
                 onChange={(event) => setFieldValue('password', event.target.value)}
+                {...(errors.password && {
+                  isError: !!errors.password,
+                  helperText: errors.password,
+                })}
               />
             </div>
             <div>
               <PasswordInput
                 label={translateMessage('input.label.passwordAgain')}
-                isError={!!errors.passwordAgain}
-                helperText={errors.passwordAgain || ''}
-                mask={/^[a-zA-Z0-9!;,.]+$/g}
                 disabled={registrationLoading}
                 value={values.passwordAgain}
                 onChange={(event) => {
@@ -172,6 +95,10 @@ export const FillLoginDataStep: React.FC<FillLoginDataStepProps> = ({ setStep })
                     setFieldError('passwordAgain', null);
                   }
                 }}
+                {...(errors.password && {
+                  isError: !!errors.password,
+                  helperText: errors.password,
+                })}
               />
             </div>
             <Button
@@ -183,7 +110,15 @@ export const FillLoginDataStep: React.FC<FillLoginDataStepProps> = ({ setStep })
         ),
       }}
       panel={{
-        data: <RulesList rulesList={rulesList} />,
+        data: (
+          <>
+            <Rules
+              rules={PASSWORD_RULES(values.password)}
+              titleIntlPath="page.registration.passwordRules.passwordMust"
+            />
+            <Rules rules={PASSWORD_AGAIN_RULES(values.password, values.passwordAgain)} />
+          </>
+        ),
         footer: (
           <Link to={ROUTES.LOGIN}>
             <IntlText path="page.registration.alreadyHaveAccount" />

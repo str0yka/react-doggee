@@ -32,8 +32,14 @@
       "~utils/hooks": ["./src/utils/hooks"],
       "~features/intl": ["src/features/intl"],
       "~features/theming": ["src/features/theming"],
-      "~static/*": ["src/static/*"],
-    }
+      "~static/*": ["src/static/*"]
+    },
+
+    "plugins": [
+      {
+        "name": "typescript-plugin-css-modules"
+      }
+    ]
   },
   "include": ["src", "index.d.ts", "src/@types/*.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
