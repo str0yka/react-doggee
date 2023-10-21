@@ -7,6 +7,7 @@ import { useForm, useMutation } from '~utils/hooks';
 import { api } from '~utils/api';
 import { ROUTES } from '~utils/consts';
 
+import { useStep } from '../../../contexts';
 import { RegistrationWizardContainer } from '../../RegistrationWizardContainer/RegistrationWizardContainer';
 import { Rules } from './components';
 import { PASSWORD_AGAIN_RULES, PASSWORD_RULES } from './constants';
@@ -19,12 +20,9 @@ interface RegistrationValues {
   passwordAgain: string;
 }
 
-interface FillLoginDataStepProps {
-  setStep: (step: 'registration' | 'profile' | 'pets' | 'check') => void; // FIXME
-}
-
-export const FillLoginDataStep: React.FC<FillLoginDataStepProps> = ({ setStep }) => {
-  const { translateMessage } = useIntl();
+export const FillLoginDataStep = () => {
+  const { toNextStep } = useStep();
+  const intl = useIntl();
 
   const { mutation: registrationMutaion, isLoading: registrationLoading } = useMutation<
     ApiResponse<User>,
@@ -43,7 +41,7 @@ export const FillLoginDataStep: React.FC<FillLoginDataStepProps> = ({ setStep })
           const { passwordAgain, ...user } = values;
           const response = await registrationMutaion(user);
           if (response?.success) {
-            setStep('profile');
+            toNextStep();
           }
         } catch (error) {}
       },
@@ -62,7 +60,7 @@ export const FillLoginDataStep: React.FC<FillLoginDataStepProps> = ({ setStep })
             onSubmit={handleSubmit}>
             <div>
               <Input
-                label={translateMessage('input.label.username')}
+                label={intl.translateMessage('input.label.username')}
                 isError={!!errors.username}
                 helperText={errors.username || ''}
                 disabled={registrationLoading}
@@ -72,7 +70,7 @@ export const FillLoginDataStep: React.FC<FillLoginDataStepProps> = ({ setStep })
             </div>
             <div>
               <PasswordInput
-                label={translateMessage('input.label.password')}
+                label={intl.translateMessage('input.label.password')}
                 disabled={registrationLoading}
                 value={values.password}
                 onChange={(event) => setFieldValue('password', event.target.value)}
@@ -84,7 +82,7 @@ export const FillLoginDataStep: React.FC<FillLoginDataStepProps> = ({ setStep })
             </div>
             <div>
               <PasswordInput
-                label={translateMessage('input.label.passwordAgain')}
+                label={intl.translateMessage('input.label.passwordAgain')}
                 disabled={registrationLoading}
                 value={values.passwordAgain}
                 onChange={(event) => {
@@ -95,9 +93,9 @@ export const FillLoginDataStep: React.FC<FillLoginDataStepProps> = ({ setStep })
                     setFieldError('passwordAgain', null);
                   }
                 }}
-                {...(errors.password && {
-                  isError: !!errors.password,
-                  helperText: errors.password,
+                {...(errors.passwordAgain && {
+                  isError: !!errors.passwordAgain,
+                  helperText: errors.passwordAgain,
                 })}
               />
             </div>

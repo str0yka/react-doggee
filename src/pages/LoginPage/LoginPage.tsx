@@ -25,7 +25,7 @@ interface User {
 
 export const LoginPage = () => {
   const { theme } = useTheme();
-  const { translateMessage } = useIntl();
+  const intl = useIntl();
 
   const {
     mutation: authMutaion,
@@ -62,12 +62,11 @@ export const LoginPage = () => {
         <div className={getClassName(s.headerContainer, s[theme])}>DOGGEE</div>
         <form
           className={s.formContainer}
-          onSubmit={handleSubmit}
-        >
+          onSubmit={handleSubmit}>
           {authError && <span>erorr: {authError}</span>}
           <div className={s.inputContainer}>
             <Input
-              label={translateMessage('input.label.username')}
+              label={intl.translateMessage('input.label.username')}
               disabled={authLoading}
               isError={!!errors.username}
               helperText={errors.username || ''}
@@ -77,7 +76,7 @@ export const LoginPage = () => {
           </div>
           <div className={s.inputContainer}>
             <PasswordInput
-              label={translateMessage('input.label.password')}
+              label={intl.translateMessage('input.label.password')}
               disabled={authLoading}
               isError={!!errors.password}
               helperText={errors.password || ''}
@@ -87,7 +86,7 @@ export const LoginPage = () => {
           </div>
           <div>
             <Checkbox
-              label={translateMessage('input.label.notMyDevice')}
+              label={intl.translateMessage('input.label.notMyDevice')}
               disabled={authLoading}
               checked={values.notMyComputer}
               onChange={(event) => setFieldValue('notMyComputer', event.target.checked)}
@@ -95,16 +94,14 @@ export const LoginPage = () => {
           </div>
           <Button
             isLoading={authLoading}
-            type="submit"
-          >
+            type="submit">
             <IntlText path="button.signIn" />
           </Button>
         </form>
         <div className={s.signUpContainer}>
           <Link
             className={s.signUpLink}
-            to={ROUTES.REGISTRATION}
-          >
+            to={ROUTES.REGISTRATION}>
             <IntlText path="page.login.createNewAccount" />
           </Link>
         </div>

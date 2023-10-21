@@ -12,6 +12,12 @@
   cursor: pointer;
 }
 
+.stepperContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .formContainer {
   grid-column: 2 / 3;
   display: flex;
@@ -42,11 +48,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url("/images/background-doggee-light.svg");
+  background-image: url('/images/background-doggee-light.svg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  color: #FFF;
+  color: #fff;
   font-size: 40px;
   font-family: 'Baloo 2', Arial, Helvetica, sans-serif;
   user-select: none;
@@ -69,5 +75,5 @@
 .signInLink {
   font-size: 14px;
   font-weight: 600;
-  color: #FFF;
+  color: #fff;
 }

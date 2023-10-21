@@ -13,11 +13,14 @@
   "page.registration.alreadyHaveAccount": "У меня уже есть аккаунт",
   "page.registration.fillYourLoginData": "Введите свои данные",
   "page.registration.letsFillYourProfile": "Заполните свой профиль",
-  "page.registration.addressInfo": "Мы хотел знать ваш адрес для того, чтобы качественнее подбирать для ветеринарные клиники и т.д.",
+  "page.registration.addressInfo": "Мы хотим знать ваш адрес для того, чтобы качественнее подбирать для ветеринарные клиники и т.д.",
   "page.registration.passwordRules.passwordMust": "Пароль должен:",
   "page.registration.passwordRules.containNumbers": "Содержать <rule>цифры</rule>",
   "page.registration.passwordRules.containUppercase": "Содержать <rule>большие</rule> буквы",
   "page.registration.passwordRules.containLowercase": "Содержать <rule>маленькие</rule> буквы",
   "page.registration.passwordRules.containAtLeast8Characters": "Содержать как минимум <rule>8</rule> символов",
-  "page.registration.passwordRules.mustMatch": "Пароли должны <rule>совпадать</rule>"
+  "page.registration.passwordRules.mustMatch": "Пароли должны <rule>совпадать</rule>",
+  "page.registration.step.fillProfileData.label": "Профиль",
+  "page.registration.step.addYourPetsStep.label": "Питомцы",
+  "page.registration.step.checkDataStep.label": "Гав!"
 }

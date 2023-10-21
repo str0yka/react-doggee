@@ -7,7 +7,7 @@ interface IntlTextProps extends TranslateMessageParams {
 }
 
 export const IntlText: React.FC<IntlTextProps> = ({ path, values, children }) => {
-  const { translateMessage } = useIntl();
+  const intl = useIntl();
   const withFunctionalKeys =
     !!values && !!Object.keys(values).filter((key) => typeof values[key] === 'function').length;
 
@@ -44,15 +44,15 @@ export const IntlText: React.FC<IntlTextProps> = ({ path, values, children }) =>
 
   if (withFunctionalKeys) {
     if (typeof children === 'function') {
-      return children(translateMessageWithTags(translateMessage(path, values), values));
+      return children(translateMessageWithTags(intl.translateMessage(path, values), values));
     }
 
-    return translateMessageWithTags(translateMessage(path, values), values);
+    return translateMessageWithTags(intl.translateMessage(path, values), values);
   }
 
   if (typeof children === 'function') {
-    return children(translateMessage(path, values));
+    return children(intl.translateMessage(path, values));
   }
 
-  return translateMessage(path, values);
+  return intl.translateMessage(path, values);
 };

@@ -19,5 +19,8 @@
   "page.registration.passwordRules.containUppercase": "Contain <rule>uppercase</rule> letters",
   "page.registration.passwordRules.containLowercase": "Contain <rule>lowercase</rule> letters",
   "page.registration.passwordRules.containAtLeast8Characters": "Contain at least <rule>8</rule> characters",
-  "page.registration.passwordRules.mustMatch": "Passwords must <rule>match</rule>"
+  "page.registration.passwordRules.mustMatch": "Passwords must <rule>match</rule>",
+  "page.registration.step.fillProfileData.label": "Your profile",
+  "page.registration.step.addYourPetsStep.label": "Your pets",
+  "page.registration.step.checkDataStep.label": "Woof!"
 }

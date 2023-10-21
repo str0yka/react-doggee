@@ -1,0 +1,60 @@
+.stepsContainer {
+  display: flex;
+  align-items: center;
+}
+
+.stepLine {
+  width: 50px;
+  height: 1px;
+  background-color: var(--color-additional-light);
+
+  &.active {
+    height: 2px;
+  }
+}
+
+.stepCircle {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: var(--color-additional-light);
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+
+  &.active {
+    background-color: var(--color-additional-default);
+  }
+}
+
+.stepLabel {
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.stepContainer {
+  width: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+
+  &.active {
+    .stepLabel {
+      font-weight: 600;
+    }
+  }
+}
+
+.lastStepIcon {
+  width: 16px;
+  height: 11px;
+
+  path {
+    fill: #fff;
+    stroke: #fff;
+  }
+}

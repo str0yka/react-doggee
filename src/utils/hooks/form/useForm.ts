@@ -6,6 +6,7 @@ interface UseFormParams<Values> {
     [Key in keyof Values]?: (value: Values[Key]) => string | null;
   };
   validateOnChange?: boolean;
+  validateOnSubmit?: boolean;
   onSubmit?: (values: Values) => void;
 }
 
@@ -19,10 +20,11 @@ export const useForm = <Values extends Object>({
   initialValues,
   validateSchema,
   validateOnChange = true,
+  validateOnSubmit = true,
   onSubmit,
 }: UseFormParams<Values>) => {
   const [values, setValues] = useState(initialValues);
-  const [errors, setErrors] = useState<{ [Key in keyof Values]?: string }>(
+  const [errors, setErrors] = useState<{ [Key in keyof Values]?: string | null }>(
     getObjectWithSameKeys(initialValues, null),
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -30,7 +32,7 @@ export const useForm = <Values extends Object>({
   const setFieldValue = <T extends keyof Values>(field: T, value: Values[T]) => {
     setValues((prev) => ({ ...prev, [field]: value }));
 
-    const validateField = validateSchema && validateSchema[field];
+    const validateField = validateSchema?.[field];
     if (validateField && validateOnChange) {
       const error = validateField(value);
       setErrors((prev) => ({ ...prev, [field]: error }));
@@ -41,15 +43,35 @@ export const useForm = <Values extends Object>({
     setErrors((prev) => ({ ...prev, [field]: error }));
   };
 
+  const validate = () => {
+    const validateErrors: typeof errors = {};
+    let isErrors = false;
+
+    for (const field in validateSchema) {
+      const error = validateSchema[field]?.(values[field]);
+
+      if (error) {
+        isErrors = true;
+        validateErrors[field] = error;
+      }
+    }
+
+    setErrors({ ...errors, ...validateErrors });
+
+    return { validateErrors, isErrors };
+  };
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (onSubmit) {
+    const isErrors = validateOnSubmit && validate().isErrors;
+
+    if (onSubmit && !isErrors) {
       setIsSubmitting(true);
       onSubmit(values);
       setIsSubmitting(false);
     }
   };
 
-  return { values, errors, handleSubmit, isSubmitting, setFieldValue, setFieldError };
+  return { values, errors, handleSubmit, isSubmitting, setFieldValue, setFieldError, validate };
 };

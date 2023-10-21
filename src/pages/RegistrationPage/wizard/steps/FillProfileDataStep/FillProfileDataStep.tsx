@@ -12,11 +12,7 @@ interface FillProfileValues {
   birthdayDate: Date;
 }
 
-interface FillProfileDataStepProps {
-  setStep: (step: 'registration' | 'profile' | 'pets' | 'check') => void; // FIXME
-}
-
-export const FillProfileDataStep: React.FC<FillProfileDataStepProps> = () => {
+export const FillProfileDataStep = () => {
   const { values, errors, handleSubmit, setFieldValue } = useForm<FillProfileValues>({
     initialValues: {
       name: '',
@@ -26,44 +22,44 @@ export const FillProfileDataStep: React.FC<FillProfileDataStepProps> = () => {
     onSubmit: (values) => console.log('values: ', values),
   });
 
-  const { locale, translateMessage } = useIntl();
+  const intl = useIntl();
 
   return (
     <RegistrationWizardContainer
+      activeStep={1}
       form={{
         title: <IntlText path="page.registration.letsFillYourProfile" />,
         content: (
           <form
             className={s.formContainer}
-            onSubmit={handleSubmit}
-          >
-            <div className={s.inputContainer}>
+            onSubmit={handleSubmit}>
+            <div>
               <Input
-                label={translateMessage('input.label.name')}
-                isError={!!errors.name}
-                helperText={errors.name || ''}
+                label={intl.translateMessage('input.label.name')}
                 value={values.name}
                 onChange={(event) => setFieldValue('name', event.target.value)}
+                {...(errors.name && { isError: !!errors.name, helperText: errors.name })}
               />
             </div>
-            <div className={s.inputContainer}>
+            <div>
               <Input
-                label={translateMessage('input.label.address')}
-                isError={!!errors.address}
-                helperText={errors.address || ''}
+                label={intl.translateMessage('input.label.address')}
                 value={values.address}
                 onChange={(event) => setFieldValue('address', event.target.value)}
+                {...(errors.address && { isError: !!errors.address, helperText: errors.address })}
               />
             </div>
-            <div className={s.inputContainer}>
+            <div>
               <DateInput
-                label={translateMessage('input.label.yourBirthday')}
-                isError={!!errors.birthdayDate}
-                helperText={errors.birthdayDate || ''}
+                label={intl.translateMessage('input.label.yourBirthday')}
                 selectedDate={values.birthdayDate}
                 selectDate={(date) => setFieldValue('birthdayDate', date)}
-                locale={locale}
+                locale={intl.locale}
                 firstWeekDayNumber={2}
+                {...(errors.birthdayDate && {
+                  isError: !!errors.birthdayDate,
+                  helperText: errors.birthdayDate,
+                })}
               />
             </div>
             <Button type="submit">
