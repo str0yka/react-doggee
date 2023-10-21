@@ -36,6 +36,10 @@ export default defineConfig({
         replacement: path.resolve(__dirname, 'src/utils/hooks'),
       },
       {
+        find: '~utils/contexts',
+        replacement: path.resolve(__dirname, 'src/utils/contexts'),
+      },
+      {
         find: '~features/intl',
         replacement: path.resolve(__dirname, 'src/features/intl'),
       },

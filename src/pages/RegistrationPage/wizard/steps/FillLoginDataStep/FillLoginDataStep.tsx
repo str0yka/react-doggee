@@ -6,6 +6,7 @@ import { IntlText, useIntl } from '~features/intl';
 import { useForm, useMutation } from '~utils/hooks';
 import { api } from '~utils/api';
 import { ROUTES } from '~utils/consts';
+import { useUser } from '~utils/contexts';
 
 import { useStep } from '../../../contexts';
 import { RegistrationWizardContainer } from '../../RegistrationWizardContainer/RegistrationWizardContainer';
@@ -21,8 +22,9 @@ interface RegistrationValues {
 }
 
 export const FillLoginDataStep = () => {
-  const { toNextStep } = useStep();
+  const { setUser } = useUser();
   const intl = useIntl();
+  const { toNextStep } = useStep();
 
   const { mutation: registrationMutaion, isLoading: registrationLoading } = useMutation<
     ApiResponse<User>,
@@ -41,6 +43,7 @@ export const FillLoginDataStep = () => {
           const { passwordAgain, ...user } = values;
           const response = await registrationMutaion(user);
           if (response?.success) {
+            setUser(response.data);
             toNextStep();
           }
         } catch (error) {}
