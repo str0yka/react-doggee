@@ -3,17 +3,18 @@ import { Link } from 'react-router-dom';
 import { Button } from '~common/buttons';
 import { Input, PasswordInput } from '~common/fields';
 import { IntlText, useIntl } from '~features/intl';
-import { useForm, useMutation } from '~utils/hooks';
 import { api } from '~utils/api';
 import { ROUTES } from '~utils/consts';
 import { useUser } from '~utils/contexts';
+import { useForm, useMutation } from '~utils/hooks';
 
 import { useStep } from '../../../contexts';
 import { RegistrationWizardContainer } from '../../RegistrationWizardContainer/RegistrationWizardContainer';
+
+import s from './FillLoginDataStep.module.scss';
 import { Rules } from './components';
 import { PASSWORD_AGAIN_RULES, PASSWORD_RULES } from './constants';
 import { validatePassword } from './helpers';
-import s from './FillLoginDataStep.module.scss';
 
 interface RegistrationValues {
   username: string;
@@ -38,15 +39,17 @@ export const FillLoginDataStep = () => {
         password: '',
         passwordAgain: '',
       },
-      onSubmit: async (values) => {
+      onSubmit: async (val) => {
         try {
-          const { passwordAgain, ...user } = values;
+          const { passwordAgain, ...user } = val;
           const response = await registrationMutaion(user);
           if (response?.success) {
             setUser(response.data);
             toNextStep();
           }
-        } catch (error) {}
+        } catch (error) {
+          console.log(error)
+        }
       },
       validateSchema: {
         password: validatePassword,
@@ -63,18 +66,18 @@ export const FillLoginDataStep = () => {
             onSubmit={handleSubmit}>
             <div>
               <Input
-                label={intl.translateMessage('input.label.username')}
-                isError={!!errors.username}
-                helperText={errors.username || ''}
                 disabled={registrationLoading}
+                helperText={errors.username || ''}
+                isError={!!errors.username}
+                label={intl.translateMessage('input.label.username')}
                 value={values.username}
                 onChange={(event) => setFieldValue('username', event.target.value)}
               />
             </div>
             <div>
               <PasswordInput
-                label={intl.translateMessage('input.label.password')}
                 disabled={registrationLoading}
+                label={intl.translateMessage('input.label.password')}
                 value={values.password}
                 onChange={(event) => setFieldValue('password', event.target.value)}
                 {...(errors.password && {
@@ -85,8 +88,8 @@ export const FillLoginDataStep = () => {
             </div>
             <div>
               <PasswordInput
-                label={intl.translateMessage('input.label.passwordAgain')}
                 disabled={registrationLoading}
+                label={intl.translateMessage('input.label.passwordAgain')}
                 value={values.passwordAgain}
                 onChange={(event) => {
                   setFieldValue('passwordAgain', event.target.value);

@@ -5,8 +5,8 @@ import { IntlProvider } from '~features/intl';
 import { getInitialTheme, ThemeProvider } from '~features/theming';
 import { LoadingPage } from '~pages';
 import { privateRoutes, publicRoutes } from '~router';
-import { deleteCookie, getCookie, getLocale, getMessages } from '~utils/helpers';
 import { UserProvider } from '~utils/contexts';
+import { deleteCookie, getCookie, getLocale, getMessages } from '~utils/helpers';
 
 const App = () => {
   const theme = getInitialTheme();
@@ -43,7 +43,8 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <IntlProvider
         locale={locale}
-        messages={messages}>
+        messages={messages}
+      >
         <UserProvider>
           <RouterProvider router={router} />
         </UserProvider>
