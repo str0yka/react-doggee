@@ -1,41 +1,46 @@
 import { DropDownIcon } from '~common/icons';
+import { IntlText } from '~features/intl';
 import { getClassName } from '~utils/helpers';
 
 import { Input, InputWrapper } from '../../Input/Input';
+
 import s from './Select.module.scss';
 import { useSelect } from './hooks';
 
-interface SelectProps extends Omit<InputProps, 'type' | 'value' | 'onSelect'> {
-  options: Option[];
-  defaultOption?: Option;
-  onSelect?: (option: Option['value']) => void;
+interface SelectProps<Options extends Option[]>
+  extends Omit<InputProps, 'type' | 'value' | 'onSelect'> {
+  options: Options;
+  value: Options[number]['value'];
+  onSelect?: (option: Options[number]['value']) => void;
   filterOptions?: FilterOptionsFunction;
 }
 
 const DEFAULT_FILTER_FUNCTION = (option: Option, inputValue: string) =>
   option.label.toLowerCase().includes(inputValue.toLowerCase());
 
-export const Select: React.FC<SelectProps> = ({
+export const Select = <Options extends Option[]>({
   options,
-  defaultOption = options[0],
+  value,
   onSelect,
   filterOptions = DEFAULT_FILTER_FUNCTION,
   ...props
-}) => {
-  const { state, refs, functions } = useSelect({ options, defaultOption, onSelect, filterOptions });
+}: SelectProps<Options>) => {
+  const { state, refs, functions } = useSelect({ options, value, onSelect, filterOptions });
 
   return (
     <InputWrapper>
       <div
         ref={refs.selectRef}
         className={s.selectContainer}
+        role='listbox'
+        tabIndex={0}
+        onClick={functions.onSelectClick}
         onKeyDown={functions.onSelectKeyDown}
-        onClick={functions.onSelectClick}>
+      >
         <Input
           {...props}
-          type="text"
+          type='text'
           value={state.inputValue}
-          onChange={functions.onInputValueChange}
           indicator={
             <div className={s.indicatorContainer}>
               <DropDownIcon
@@ -43,25 +48,38 @@ export const Select: React.FC<SelectProps> = ({
               />
             </div>
           }
+          onChange={functions.onInputValueChange}
         />
         {state.isOpen && (
           <ul
             ref={refs.ulRef}
-            className={s.optionsContainer}>
+            className={s.optionsContainer}
+          >
+            {!state.filteredOptions.length && (
+              <li>
+                <button
+                  className={getClassName(s.option, s.optionNotFound)}
+                  type='button'
+                >
+                  <IntlText path='select.options.label.noOptions' />
+                </button>
+              </li>
+            )}
             {state.filteredOptions.map((filteredOption) => {
-              const isSelected = state.selectedOption.value === filteredOption.value;
+              const isSelected = state.value === filteredOption.value;
               const isFocused = state.searchSelectedOption.value === filteredOption.value;
 
               return (
                 <li key={filteredOption.value}>
                   <button
+                    type='button'
                     className={getClassName(
                       s.option,
                       isSelected && s.optionSelected,
-                      isFocused && s.optionFocused,
+                      isFocused && s.optionFocused
                     )}
-                    type="button"
-                    onClick={() => functions.onSelectOption(filteredOption)}>
+                    onClick={() => functions.onSelectOption(filteredOption.value)}
+                  >
                     {filteredOption.label}
                   </button>
                 </li>

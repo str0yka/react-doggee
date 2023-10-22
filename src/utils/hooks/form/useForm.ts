@@ -10,22 +10,22 @@ interface UseFormParams<Values> {
   onSubmit?: (values: Values) => void;
 }
 
-const getObjectWithSameKeys = <T extends Object>(obj: T, value: unknown) => {
+const getObjectWithSameKeys = <T extends Record<string, unknown>, K>(obj: T, value: K) => {
   const keys = Object.keys(obj) as (keyof T)[];
   const enteriesObject = keys.map((key) => [key, value]);
-  return Object.fromEntries(enteriesObject);
+  return Object.fromEntries(enteriesObject) as Record<keyof T, K>;
 };
 
-export const useForm = <Values extends Object>({
+export const useForm = <Values extends Record<string, unknown>>({
   initialValues,
   validateSchema,
   validateOnChange = true,
   validateOnSubmit = true,
-  onSubmit,
+  onSubmit
 }: UseFormParams<Values>) => {
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState<{ [Key in keyof Values]?: string | null }>(
-    getObjectWithSameKeys(initialValues, null),
+    getObjectWithSameKeys(initialValues, null)
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -47,14 +47,18 @@ export const useForm = <Values extends Object>({
     const validateErrors: typeof errors = {};
     let isErrors = false;
 
-    for (const field in validateSchema) {
-      const error = validateSchema[field]?.(values[field]);
+    if (!validateSchema) return { validateErrors, isErrors };
+
+    const validateSchemaKeys = Object.keys(validateSchema) as (keyof typeof validateSchema)[];
+
+    validateSchemaKeys.forEach((validateSchemaKey) => {
+      const error = validateSchema[validateSchemaKey]?.(values[validateSchemaKey]);
 
       if (error) {
         isErrors = true;
-        validateErrors[field] = error;
+        validateErrors[validateSchemaKey] = error;
       }
-    }
+    });
 
     setErrors({ ...errors, ...validateErrors });
 

@@ -11,7 +11,7 @@ import { deleteCookie, getCookie, getLocale, getMessages } from '~utils/helpers'
 const App = () => {
   const theme = getInitialTheme();
   const [isAuth, setIsAuth] = useState(false);
-  const [messages, setMessages] = useState({});
+  const [messages, setMessages] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(true);
   const router = createBrowserRouter(isAuth ? publicRoutes : privateRoutes);
   const locale = getLocale();
@@ -31,8 +31,8 @@ const App = () => {
     }
 
     (async () => {
-      const messages = await getMessages(locale);
-      setMessages(messages);
+      const localeMessages = await getMessages(locale);
+      setMessages(localeMessages);
       setIsLoading(false);
     })();
   }, []);

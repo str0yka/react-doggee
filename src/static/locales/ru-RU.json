@@ -6,11 +6,20 @@
   "input.label.address": "Где вы живете?",
   "input.label.name": "Как вас зовут?",
   "input.label.yourBirthday": "Дата рождения",
+  "input.label.dogName": "Кличка",
+  "input.label.breed": "Порода",
+  "input.label.dogBirthday": "День рождения",
+  "input.label.dogWeight": "Вес",
+
+  "select.options.label.noOptions": "Не найдено",
+
   "button.signIn": "Войти",
   "button.done": "Далее",
   "button.next": "Дальше",
+
   "page.login.createNewAccount": "Создать новый аккаунт",
   "page.registration.alreadyHaveAccount": "У меня уже есть аккаунт",
+  "page.registration.skipStep": "Пропустить и заполнить потом",
   "page.registration.fillYourLoginData": "Введите свои данные",
   "page.registration.letsFillYourProfile": "Заполните свой профиль",
   "page.registration.addressInfo": "Мы хотим знать ваш адрес для того, чтобы качественнее подбирать для ветеринарные клиники и т.д.",

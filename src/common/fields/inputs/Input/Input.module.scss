@@ -55,6 +55,18 @@
   font-size: 10px;
 }
 
+.indicatorContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    path {
+      fill: var(--color-neutral-400);
+    }
+  }
+}
+
 .helperText {
   padding-left: 10px;
   font-size: 12px;

@@ -1,38 +1,49 @@
-import { DateInput, Input } from '~common/fields';
+import { Link } from 'react-router-dom';
+
 import { Button } from '~common/buttons';
+import { DateInput, Input } from '~common/fields';
+import { ArrowIcon } from '~common/icons';
 import { IntlText, useIntl } from '~features/intl';
+import { ROUTES } from '~utils/consts';
 import { useForm } from '~utils/hooks';
 
+import { useStep } from '../../../contexts';
 import { RegistrationWizardContainer } from '../../RegistrationWizardContainer/RegistrationWizardContainer';
+
 import s from './FillProfileDataStep.module.scss';
 
-interface FillProfileValues {
+type FillProfileValues = {
   name: string;
   address: string;
   birthdayDate: Date;
-}
+};
 
 export const FillProfileDataStep = () => {
+  const { toNextStep } = useStep();
+
+  const intl = useIntl();
+
   const { values, errors, handleSubmit, setFieldValue } = useForm<FillProfileValues>({
     initialValues: {
       name: '',
       address: '',
-      birthdayDate: new Date(),
+      birthdayDate: new Date()
     },
-    onSubmit: (values) => console.log('values: ', values),
+    onSubmit: (val) => {
+      toNextStep();
+    }
   });
-
-  const intl = useIntl();
 
   return (
     <RegistrationWizardContainer
       activeStep={1}
       form={{
-        title: <IntlText path="page.registration.letsFillYourProfile" />,
+        title: <IntlText path='page.registration.letsFillYourProfile' />,
         content: (
           <form
             className={s.formContainer}
-            onSubmit={handleSubmit}>
+            onSubmit={handleSubmit}
+          >
             <div>
               <Input
                 label={intl.translateMessage('input.label.name')}
@@ -51,30 +62,38 @@ export const FillProfileDataStep = () => {
             </div>
             <div>
               <DateInput
-                label={intl.translateMessage('input.label.yourBirthday')}
-                selectedDate={values.birthdayDate}
-                selectDate={(date) => setFieldValue('birthdayDate', date)}
-                locale={intl.locale}
                 firstWeekDayNumber={2}
+                label={intl.translateMessage('input.label.yourBirthday')}
+                locale={intl.locale}
+                selectDate={(date) => setFieldValue('birthdayDate', date)}
+                selectedDate={values.birthdayDate}
                 {...(errors.birthdayDate && {
                   isError: !!errors.birthdayDate,
-                  helperText: errors.birthdayDate,
+                  helperText: errors.birthdayDate
                 })}
               />
             </div>
-            <Button type="submit">
-              <IntlText path="button.next" />
+            <Button type='submit'>
+              <IntlText path='button.next' />
             </Button>
           </form>
-        ),
+        )
       }}
       panel={{
         data: (
           <span className={s.panelData}>
-            <IntlText path="page.registration.addressInfo" />
+            <IntlText path='page.registration.addressInfo' />
           </span>
         ),
-        footer: <IntlText path="page.registration.alreadyHaveAccount" />,
+        footer: (
+          <Link
+            className={s.footerLink}
+            to={ROUTES.HOME}
+          >
+            <IntlText path='page.registration.skipStep' />
+            <ArrowIcon className={s.footerLinkIcon} />
+          </Link>
+        )
       }}
     />
   );

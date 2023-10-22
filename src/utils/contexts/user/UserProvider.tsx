@@ -7,10 +7,10 @@ interface UserProviderProps {
   children: React.ReactNode;
 }
 
-export const UserProvider: React.FC<UserProviderProps> = (props) => {
-  const [user, setUser] = useState(props.user);
+export const UserProvider: React.FC<UserProviderProps> = ({ user, children }) => {
+  const [userState, setUserState] = useState(user);
 
-  const userState = useMemo(() => ({ user, setUser }), [user]);
+  const userStateMemoized = useMemo(() => ({ user: userState, setUser: setUserState }), [user]);
 
-  return <UserContext.Provider value={userState}>{props.children}</UserContext.Provider>;
+  return <UserContext.Provider value={userStateMemoized}>{children}</UserContext.Provider>;
 };

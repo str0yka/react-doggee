@@ -1,25 +1,25 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+
 import { useOnClickOutside } from '~utils/hooks';
 
-interface UseSelectParams {
-  options: Option[];
-  defaultOption?: Option;
-  onSelect?: (value: Option['value']) => void;
+interface UseSelectParams<Options extends Option[]> {
+  options: Options;
+  value: Options[number]['value'];
+  onSelect?: (value: Options[number]['value']) => void;
   filterOptions: FilterOptionsFunction;
 }
 
-export const useSelect = ({
+export const useSelect = <Options extends Option[]>({
   options,
   filterOptions,
-  defaultOption = options[0],
-  onSelect,
-}: UseSelectParams) => {
+  value,
+  onSelect
+}: UseSelectParams<Options>) => {
   const [inputValue, setInputValue] = useState('');
-  const [selectedOption, setSelectedOption] = useState(defaultOption);
   const [isOpen, setIsOpen] = useState(false);
   const [searchSelectedOption, setSearchSelectedOption] = useState({
-    index: options.findIndex((option) => option.value === defaultOption.value),
-    value: defaultOption.value,
+    index: options.findIndex((option) => option.value === value),
+    value
   });
 
   const selectRef = useRef<HTMLDivElement>(null);
@@ -27,7 +27,7 @@ export const useSelect = ({
 
   const filteredOptions = useMemo(
     () => options.filter((option) => filterOptions(option, inputValue)),
-    [options, inputValue],
+    [options, inputValue]
   );
 
   useEffect(
@@ -36,7 +36,7 @@ export const useSelect = ({
         if (!filteredOptions.length) return;
 
         const searchOption = filteredOptions.find(
-          (option) => option.value === searchSelectedOption.value,
+          (option) => option.value === searchSelectedOption.value
         );
 
         if (!searchOption) {
@@ -45,10 +45,10 @@ export const useSelect = ({
 
         setSearchSelectedOption({
           index: filteredOptions.findIndex((option) => option.value === searchOption.value),
-          value: searchOption.value,
+          value: searchOption.value
         });
       })(),
-    [filteredOptions],
+    [filteredOptions]
   );
 
   useLayoutEffect(() => {
@@ -65,20 +65,22 @@ export const useSelect = ({
 
       if (optionOffsetTop > ulRef.current.scrollTop + ulRef.current.offsetHeight - optionHeight) {
         ulRef.current.scrollTop = optionOffsetTop - ulRef.current.offsetHeight + optionHeight;
-        return;
       }
     })();
   }, [ulRef, searchSelectedOption.index, isOpen]);
 
-  const onClose = (newSelectedOption?: Option) => {
+  const onClose = (newSelectedValue?: Options[number]['value']) => {
     setIsOpen(false);
 
-    const selectedOptionNow = newSelectedOption ?? selectedOption;
+    const selectedValue = newSelectedValue ?? value;
+
+    const selectedOptionNow =
+      options.find((option) => option.value === selectedValue) ?? options[0];
 
     setInputValue(selectedOptionNow.label.toString());
     setSearchSelectedOption({
       index: options.findIndex((option) => option.value === selectedOptionNow.value),
-      value: selectedOptionNow.value,
+      value: selectedOptionNow.value
     });
   };
 
@@ -87,10 +89,9 @@ export const useSelect = ({
     setInputValue('');
   };
 
-  const onSelectOption = (newSelectedOption: Option) => {
-    setSelectedOption(newSelectedOption);
-    onClose(newSelectedOption);
-    onSelect?.(newSelectedOption.value);
+  const onSelectOption = (newSelectedValue: Options[number]['value']) => {
+    onClose(newSelectedValue);
+    onSelect?.(newSelectedValue);
   };
 
   const onSelectKeyDown = (event: React.KeyboardEvent) => {
@@ -105,9 +106,10 @@ export const useSelect = ({
       if (!isOpen) return onOpen();
 
       const newSelectedOption = filteredOptions.find(
-        (option) => option.value === searchSelectedOption.value,
-      )!;
-      onSelectOption(newSelectedOption);
+        (option) => option.value === searchSelectedOption.value
+      );
+
+      if (newSelectedOption) onSelectOption(newSelectedOption.value);
     }
 
     if (event.code === 'ArrowUp') {
@@ -122,7 +124,7 @@ export const useSelect = ({
 
       return setSearchSelectedOption({
         index: upperIndex,
-        value: upperOption.value,
+        value: upperOption.value
       });
     }
 
@@ -138,7 +140,7 @@ export const useSelect = ({
 
       return setSearchSelectedOption({
         index: lowerIndex,
-        value: lowerOption.value,
+        value: lowerOption.value
       });
     }
   };
@@ -157,15 +159,15 @@ export const useSelect = ({
 
   return {
     state: {
+      value,
       inputValue,
-      selectedOption,
       isOpen,
       searchSelectedOption,
-      filteredOptions,
+      filteredOptions
     },
     refs: {
       selectRef,
-      ulRef,
+      ulRef
     },
     functions: {
       onClose,
@@ -173,7 +175,7 @@ export const useSelect = ({
       onSelectOption,
       onSelectKeyDown,
       onInputValueChange,
-      onSelectClick,
-    },
+      onSelectClick
+    }
   };
 };

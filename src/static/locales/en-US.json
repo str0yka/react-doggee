@@ -6,11 +6,20 @@
   "input.label.address": "Where do you live?",
   "input.label.name": "What is your name?",
   "input.label.yourBirthday": "Your Birthday",
+  "input.label.dogName": "Dog's name",
+  "input.label.breed": "Dog’s breed",
+  "input.label.dogBirthday": "Dog’s birthday",
+  "input.label.dogWeight": "Dog's weight",
+
+  "select.options.label.noOptions": "No options",
+
   "button.signIn": "Sign in",
   "button.done": "Done",
   "button.next": "Next",
+
   "page.login.createNewAccount": "Create new account",
   "page.registration.alreadyHaveAccount": "I already have an account",
+  "page.registration.skipStep": "Skip and fill it later",
   "page.registration.fillYourLoginData": "Fill your login data",
   "page.registration.letsFillYourProfile": "Let's fill your profile!",
   "page.registration.addressInfo": "We want to know your address so that we can suggest good places for walks with your pet, the nearest veterinary clinics, etc.",

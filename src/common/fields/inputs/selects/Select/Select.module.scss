@@ -52,4 +52,9 @@
     background-color: var(--color-additional-default);
     color: var(--color-neutral-500);
   }
+
+  &.optionNotFound {
+    cursor: default;
+    background-color: var(--color-neutral-200);
+  }
 }

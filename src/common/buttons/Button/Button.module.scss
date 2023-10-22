@@ -8,7 +8,7 @@
   background: var(--color-accent-default);
   box-shadow: var(--shadow-button);
   font-weight: 600;
-  color: var(--color-neutral-100);
+  color: #fff;
   transition: box-shadow 200ms ease, background-color 200ms ease, color 200ms ease;
   user-select: none;
   cursor: pointer;
@@ -29,7 +29,9 @@
   }
 }
 
-.loader, .loader::before, .loader::after {
+.loader,
+.loader::before,
+.loader::after {
   width: 18px;
   height: 18px;
   background-color: var(--color-neutral-100);
