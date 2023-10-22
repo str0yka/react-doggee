@@ -1,25 +1,23 @@
 type BaseURL = string;
 
 export class API {
-  readonly baseURL: BaseURL;
-  readonly defaultOptions: Pick<RequestInit, 'credentials' | 'headers'>;
+  private readonly baseURL: BaseURL;
 
-  constructor(baseURL: string) {
+  private readonly defaultConfig: RequestInit;
+
+  constructor(baseURL: string, defaultConfig?: RequestInit) {
     this.baseURL = baseURL;
-    this.defaultOptions = {
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-    };
+    this.defaultConfig = defaultConfig ?? {};
   }
 
-  async request<T>(endpoint: string, options: RequestInit = {}) {
+  private async request<T>(endpoint: string, config: RequestInit = {}) {
     const response = await fetch(this.baseURL + endpoint, {
-      ...this.defaultOptions,
-      ...options,
+      ...this.defaultConfig,
+      ...config,
       headers: {
-        ...this.defaultOptions.headers,
-        ...options.headers,
-      },
+        ...this.defaultConfig.headers,
+        ...config.headers
+      }
     });
 
     if (!response.ok) {
@@ -29,17 +27,15 @@ export class API {
     return response.json() as Promise<T>;
   }
 
-  get<T>(endpoint: string, options: Omit<RequestInit, 'method' | 'body'> = {}) {
-    return this.request<T>(endpoint, { ...options, method: 'GET' });
+  get<T>(endpoint: string, config: Omit<RequestInit, 'method' | 'body'> = {}) {
+    return this.request<T>(endpoint, { ...config, method: 'GET' });
   }
 
-  post<T>(endpoint: string, body: unknown, options: Omit<RequestInit, 'method' | 'body'> = {}) {
+  post<T>(endpoint: string, body: unknown, config: Omit<RequestInit, 'method' | 'body'> = {}) {
     return this.request<T>(endpoint, {
-      ...options,
+      ...config,
       ...(!!body && { body: JSON.stringify(body) }),
-      method: 'POST',
+      method: 'POST'
     });
   }
 }
-
-export const api = new API(import.meta.env.VITE_API_URL);

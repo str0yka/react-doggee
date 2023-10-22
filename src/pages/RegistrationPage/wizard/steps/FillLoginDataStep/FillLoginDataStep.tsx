@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '~common/buttons';
 import { Input, PasswordInput } from '~common/fields';
 import { IntlText, useIntl } from '~features/intl';
-import { api } from '~utils/api';
+import { createRegistration } from '~utils/api';
 import { ROUTES } from '~utils/consts';
 import { useUser } from '~utils/contexts';
 import { useForm, useMutation } from '~utils/hooks';
@@ -31,7 +31,7 @@ export const FillLoginDataStep = () => {
   const { mutation: registrationMutaion, isLoading: registrationLoading } = useMutation<
     ApiResponse<User>,
     Omit<RegistrationValues, 'passwordAgain'>
-  >((values) => api.post('/registration', values));
+  >(createRegistration);
 
   const { values, errors, handleSubmit, setFieldValue } = useForm<RegistrationValues>({
     initialValues: {

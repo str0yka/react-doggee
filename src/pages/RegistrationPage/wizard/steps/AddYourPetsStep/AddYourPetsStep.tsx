@@ -4,8 +4,9 @@ import { Button } from '~common/buttons';
 import { DateInput, Input, Select } from '~common/fields';
 import { ArrowIcon, KilogramIcon } from '~common/icons';
 import { IntlText, useIntl } from '~features/intl';
+import { requestBreeds } from '~utils/api';
 import { ROUTES } from '~utils/consts';
-import { useForm } from '~utils/hooks';
+import { useForm, useQuery } from '~utils/hooks';
 
 import { RegistrationWizardContainer } from '../../RegistrationWizardContainer/RegistrationWizardContainer';
 
@@ -20,6 +21,8 @@ type AddPetValues = {
 
 export const AddYourPetsStep = () => {
   const intl = useIntl();
+
+  const { data: breeds } = useQuery({ request: requestBreeds, initialValue: [] });
 
   const { values, errors, handleSubmit, setFieldValue } = useForm<AddPetValues>({
     initialValues: {
@@ -52,12 +55,8 @@ export const AddYourPetsStep = () => {
             <div>
               <Select
                 label={intl.translateMessage('input.label.breed')}
+                options={breeds.map((breed) => ({ label: breed.name, value: breed.name }))}
                 value={values.dogBreed}
-                options={[
-                  { value: 'akita', label: 'Akita' },
-                  { value: 'akita1', label: 'Akit2a' },
-                  { value: 'akita2', label: 'Akita1' }
-                ]}
                 onSelect={(value) => setFieldValue('dogBreed', value)}
                 {...(errors.dogBreed && {
                   isError: !!errors.dogBreed,

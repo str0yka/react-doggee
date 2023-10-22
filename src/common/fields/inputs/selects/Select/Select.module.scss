@@ -31,6 +31,10 @@
   overflow: auto;
   border-radius: 5px;
   background-color: var(--color-neutral-200);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .option {

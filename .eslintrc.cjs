@@ -34,6 +34,7 @@ module.exports = {
         checksVoidReturn: false
       }
     ],
+    '@typescript-eslint/no-unsafe-argument': 0,
     '@typescript-eslint/no-floating-promises': 0,
     'react/no-array-index-key': 0,
     '@typescript-eslint/no-unsafe-enum-comparison': 0,
